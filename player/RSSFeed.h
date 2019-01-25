@@ -8,7 +8,7 @@
 
 #include "RSSItem.h"
 
-class RSSFeed : QObject
+class RSSFeed : public QObject
 {
     Q_OBJECT
 
@@ -27,6 +27,7 @@ class RSSFeed : QObject
     std::vector<RSSItem*> _items;
 public:    
     explicit RSSFeed(QObject* parent = nullptr);
+    virtual ~RSSFeed() {}
 
     QString const& title() const { return _title; }
     QString const& description() const { return _description; }

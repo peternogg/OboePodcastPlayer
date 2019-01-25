@@ -23,6 +23,7 @@ class RSSItem : public QObject
     int64_t _enclosureSize;
 public:
     explicit RSSItem(QObject *parent = nullptr);
+    virtual ~RSSItem() {}
 
     QString const& title() { return _title; }
     QString const& description() { return _description; }
