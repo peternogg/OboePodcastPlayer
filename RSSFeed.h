@@ -6,6 +6,8 @@
 #include <QUrl>
 #include <QImage>
 
+#include "RSSItem.h"
+
 class RSSFeed : QObject
 {
     Q_OBJECT
@@ -22,16 +24,22 @@ class RSSFeed : QObject
     QDateTime _publishDate;
     QUrl _link;
     QImage _coverImage;
+    std::vector<RSSItem*> _items;
 public:    
     explicit RSSFeed(QObject* parent = nullptr);
 
     QString const& title() const { return _title; }
     QString const& description() const { return _description; }
     QDateTime const& publishDate() const { return _publishDate; }
+    QUrl const& link() const { return _link; }
+    QImage const& coverImage() const { return _coverImage; }
+    std::vector<RSSItem*> const& items() const { return _items; }
 
     void setTitle(QString const& title) { _title = title; }
     void setDescription(QString const& description) { _description = description; }
     void setPublishDate(QDateTime const& publishDate) { _publishDate = publishDate; }
+    void setLink(QUrl const& link) { _link = link; }
+    void setCoverImage(QImage const& image) { _coverImage = image; }
 };
 
 #endif // RSSFEED_H

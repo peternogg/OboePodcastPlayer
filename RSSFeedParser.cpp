@@ -9,8 +9,8 @@ RSSFeedParser::RSSFeedParser()
 
 RSSFeedParser::~RSSFeedParser() {}
 
-std::optional<RSSFeed> RSSFeedParser::parse(QString const& data) {
-    RSSFeed feed;
+RSSFeed* RSSFeedParser::parse(QString const& data) {
+    RSSFeed* feed = new RSSFeed();
     _reader.addData(data);
 
     /*
@@ -36,7 +36,7 @@ std::optional<RSSFeed> RSSFeedParser::parse(QString const& data) {
     return feed;
 }
 
-bool RSSFeedParser::parse_rss(RSSFeed& feed) {
+bool RSSFeedParser::parse_rss(RSSFeed* feed) {
     qDebug() << "Saw the RSS tag";
     // Handle RSS stuff
     // channel (title | description) item*
@@ -49,14 +49,14 @@ bool RSSFeedParser::parse_rss(RSSFeed& feed) {
     // Read a token, classify it
     // Handle appropriately
     // Loop
-    do {
-    auto token = _reader.readNext();
-    if (token != QXmlStreamReader::StartElement)
-        return false;
+//    do {
+//    auto token = _reader.readNext();
+//    if (token != QXmlStreamReader::StartElement)
+//        return false;
 
-    if (_reader.name() == "channel")
-        parse_channel(feed);
-    } while ()
+//    if (_reader.name() == "channel")
+//        parse_channel(feed);
+//    } while ()
 
     qDebug() << "Name: " << _reader.name();
     return true;
