@@ -24,19 +24,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17
 
-SOURCES += \
-        main.cpp \
-        OboeWindow.cpp \
-    RSSFeedParser.cpp \
-    RSSFeed.cpp \
-    RSSItem.cpp
+SOURCES += source/main.cpp \
+           source/OboeWindow.cpp \
+           source/RSSFeed.cpp \
+           source/RSSFeedParser.cpp \
+           source/RSSItem.cpp
 
-HEADERS += \
-        OboeWindow.h \
-    RSSFeedParser.h \
-    RSSFeed.h \
-    RSSItem.h
-
+INCLUDEPATH += $$PWD/include
+HEADERS += include/OboeWindow.h \
+           include/RSSFeed.h \
+           include/RSSFeedParser.h \
+           include/RSSItem.h
 FORMS += \
         OboeWindow.ui
 

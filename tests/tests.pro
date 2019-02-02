@@ -6,12 +6,12 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  tst_RSSFeedTests.cpp \
-            ../player/RSSFeed.cpp \
-            ../player/RSSItem.cpp \
-            ../player/RSSFeedParser.cpp
+            ../player/source/RSSFeed.cpp \
+            ../player/source/RSSItem.cpp \
+            ../player/source/RSSFeedParser.cpp
 
-HEADERS +=  ../player/RSSFeed.h \
-            ../player/RSSItem.h \
-            ../player/RSSFeedParser.h
+HEADERS +=  ../player/include/RSSFeed.h \
+            ../player/include/RSSItem.h \
+            ../player/include/RSSFeedParser.h
 
 INCLUDEPATH += ../player/
