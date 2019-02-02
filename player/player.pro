@@ -24,17 +24,36 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++17
 
+INCLUDEPATH += ./include ./feedpp
+
+# Keep GCC quiet about some stuff
+QMAKE_CXXFLAGS += -Wno-pragmas -Wno-unused-variable
+
 SOURCES += source/main.cpp \
            source/OboeWindow.cpp \
-           source/RSSFeed.cpp \
-           source/RSSFeedParser.cpp \
-           source/RSSItem.cpp
+# Feedpp files
+    feedpp/atom_parser.cpp \
+    feedpp/date.cpp \
+    feedpp/exception.cpp \
+    feedpp/parser.cpp \
+    feedpp/parser_factory.cpp \
+    feedpp/rss_09x_parser.cpp \
+    feedpp/rss_10_parser.cpp \
+    feedpp/rss_parser.cpp \
+    feedpp/utils.cpp
 
-INCLUDEPATH += $$PWD/include
 HEADERS += include/OboeWindow.h \
-           include/RSSFeed.h \
-           include/RSSFeedParser.h \
-           include/RSSItem.h
+# Feedpp files
+    feedpp/date.h \
+    feedpp/exception.h \
+    feedpp/feedpp.h \
+    feedpp/log.h \
+    feedpp/parser.h \
+    feedpp/rsspp.h \
+    feedpp/rsspp_internal.h \
+    feedpp/types.h \
+    feedpp/utils.h
+
 FORMS += \
         OboeWindow.ui
 
@@ -42,3 +61,5 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+unix:!macx: LIBS += -lxml2 -lcurl
