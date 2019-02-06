@@ -57,7 +57,9 @@ void rss_09x_parser::parse_feed(feed& f, xmlNode * rootNode) {
 			f.managingeditor = get_content(node);
 		} else if (node_is(node, "item", ns)) {
 			f.items.push_back(parse_item(node));
-		}
+        } else if (node_is(node, "pubDate", ns)) {
+            f.pubDate = get_content(node);
+        }
 	}
 }
 
