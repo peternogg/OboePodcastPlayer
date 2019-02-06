@@ -40,7 +40,10 @@ SOURCES += source/main.cpp \
     feedpp/rss_09x_parser.cpp \
     feedpp/rss_10_parser.cpp \
     feedpp/rss_parser.cpp \
-    feedpp/utils.cpp
+    feedpp/utils.cpp \
+    source/SubscriptionManager.cpp \
+    source/SubscriptionListView.cpp \
+    source/Podcast.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
@@ -52,7 +55,10 @@ HEADERS += include/OboeWindow.h \
     feedpp/rsspp.h \
     feedpp/rsspp_internal.h \
     feedpp/types.h \
-    feedpp/utils.h
+    feedpp/utils.h \
+    include/SubscriptionManager.h \
+    include/SubscriptionListView.h \
+    include/Podcast.h
 
 FORMS += \
         OboeWindow.ui
