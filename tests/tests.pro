@@ -18,7 +18,9 @@ SOURCES +=  \
     ../player/feedpp/rss_09x_parser.cpp \
     ../player/feedpp/rss_10_parser.cpp \
     ../player/feedpp/rss_parser.cpp \
-    ../player/feedpp/utils.cpp
+    ../player/feedpp/utils.cpp \
+    ../player/source/PodcastItem.cpp \
+    ../player/source/Podcast.cpp
 
 HEADERS += \
     ../player/feedpp/date.h \
@@ -29,7 +31,9 @@ HEADERS += \
     ../player/feedpp/rsspp.h \
     ../player/feedpp/rsspp_internal.h \
     ../player/feedpp/types.h \
-    ../player/feedpp/utils.h
+    ../player/feedpp/utils.h \
+    ../player/include/PodcastItem.h \
+    ../player/include/Podcast.h
 
 INCLUDEPATH += ../player/include/ ../player/feedpp
 unix:!macx: LIBS += -lxml2 -lcurl

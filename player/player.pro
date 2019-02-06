@@ -43,7 +43,8 @@ SOURCES += source/main.cpp \
     feedpp/utils.cpp \
     source/SubscriptionManager.cpp \
     source/SubscriptionListView.cpp \
-    source/Podcast.cpp
+    source/Podcast.cpp \
+    source/PodcastItem.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
@@ -58,7 +59,8 @@ HEADERS += include/OboeWindow.h \
     feedpp/utils.h \
     include/SubscriptionManager.h \
     include/SubscriptionListView.h \
-    include/Podcast.h
+    include/Podcast.h \
+    include/PodcastItem.h
 
 FORMS += \
         OboeWindow.ui

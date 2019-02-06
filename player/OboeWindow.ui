@@ -197,6 +197,23 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>650</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuSubscriptions">
+    <property name="title">
+     <string>Subscriptions</string>
+    </property>
+    <addaction name="actionAdd_URL"/>
+   </widget>
+   <addaction name="menuSubscriptions"/>
+  </widget>
   <action name="goToSubscriptions">
    <property name="text">
     <string>Go To Subscriptions Page</string>
@@ -227,6 +244,11 @@
    </property>
    <property name="toolTip">
     <string>Go to the now playing screen</string>
+   </property>
+  </action>
+  <action name="actionAdd_URL">
+   <property name="text">
+    <string>Add URL</string>
    </property>
   </action>
  </widget>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:npr="https://www.npr.org/rss/" xmlns:nprml="https://api.npr.org/nprml" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Up First</title>
+    <link>http://www.npr.org/programs/morning-edition/</link>
+    <description><![CDATA[NPR's <em>Up First</em> is the news you need to start your day. The biggest stories and ideas — from politics to pop culture — in 10 minutes. Hosted by Rachel Martin, David Greene and Steve Inskeep, with reporting and analysis from NPR News. Available weekdays by 6 a.m. ET. Subscribe and listen, then support your local NPR station at donate.npr.org.]]></description>
+    <copyright>Copyright 2015-2018 NPR - For Personal Use Only</copyright>
+    <generator>NPR API RSS Generator 0.94</generator>
+    <language>en-us</language>
+    <itunes:summary><![CDATA[NPR's <em>Up First</em> is the news you need to start your day. The biggest stories and ideas — from politics to pop culture — in 10 minutes. Hosted by Rachel Martin, David Greene and Steve Inskeep, with reporting and analysis from NPR News. Available weekdays by 6 a.m. ET. Subscribe and listen, then support your local NPR station at donate.npr.org.]]></itunes:summary>
+    <itunes:author>NPR</itunes:author>
+    <itunes:block>no</itunes:block>
+    <itunes:owner>
+      <itunes:email>podcasts@npr.org</itunes:email>
+      <itunes:name>NPR</itunes:name>
+    </itunes:owner>
+    <itunes:category text="News &amp; Politics"/>
+    <itunes:image href="https://media.npr.org/assets/img/2018/08/03/npr_upfirst_podcasttile_sq-9bcafe819b7297c2d92839ec8110cf5ca5fcf04f.jpg?s=1400"/>
+    <image>
+      <url>https://media.npr.org/assets/img/2018/08/03/npr_upfirst_podcasttile_sq-9bcafe819b7297c2d92839ec8110cf5ca5fcf04f.jpg?s=1400</url>
+      <title>Up First</title>
+      <link>http://www.npr.org/programs/morning-edition/</link>
+    </image>
+    <lastBuildDate>Tue, 05 Feb 2019 06:00:17 -0500</lastBuildDate>
+    <item>
+      <title>Tuesday, February 5th, 2019</title>
+      <description><![CDATA[The White House says the president will deliver a unifying message in his State of the Union. Calls mount for Virginia Governor Ralph Northam to resign. And Russia reacts to the U.S. withdrawal from the INF Treaty.]]></description>
+      <pubDate>Tue, 05 Feb 2019 06:00:17 -0500</pubDate>
+      <copyright>Copyright 2015-2018 NPR - For Personal Use Only</copyright>
+      <guid>99c0337e-d6a9-47e8-972d-e8648c59a067</guid>
+      <itunes:title>Tuesday, February 5th, 2019</itunes:title>
+      <itunes:author>NPR</itunes:author>
+      <itunes:summary><![CDATA[The White House says the president will deliver a unifying message in his State of the Union. Calls mount for Virginia Governor Ralph Northam to resign. And Russia reacts to the U.S. withdrawal from the INF Treaty.]]></itunes:summary>
+      <itunes:image href="https://media.npr.org/assets/img/2019/02/05/thumbnail_3000x1688_wide-fde023c1eeb1861196a5f8346c7df5ee9d92e808.jpg?s=1400"/>
+      <itunes:duration>772</itunes:duration>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:episodeType>full</itunes:episodeType>
+      <content:encoded><![CDATA[The White House says the president will deliver a unifying message in his State of the Union. Calls mount for Virginia Governor Ralph Northam to resign. And Russia reacts to the U.S. withdrawal from the INF Treaty.]]></content:encoded>
+      <enclosure url="https://play.podtrac.com/npr-510318/npr.mc.tritondigital.com/NPR_510318/media/anon.npr-mp3/npr/upfirst/2019/02/20190205_upfirst_uf20519_v2.mp3?orgId=1&amp;d=772&amp;p=510318&amp;story=691519627&amp;t=podcast&amp;e=691519627&amp;ft=pod&amp;f=510318" length="12335277" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Monday, February 4th, 2019</title>
+      <description><![CDATA[Virginia's governor is under fire for a racist photo. Jury deliberations get underway for drug kingpin Joaquin "El Chapo" Guzman. And Pope Francis is on a historic trip to the Arabian Peninsula.]]></description>
+      <pubDate>Mon, 04 Feb 2019 06:00:32 -0500</pubDate>
+      <copyright>Copyright 2015-2018 NPR - For Personal Use Only</copyright>
+      <guid>96f045ee-8fc1-4c1f-afb3-20a087802ea8</guid>
+      <itunes:title>Monday, February 4th, 2019</itunes:title>
+      <itunes:author>NPR</itunes:author>
+      <itunes:summary><![CDATA[Virginia's governor is under fire for a racist photo. Jury deliberations get underway for drug kingpin Joaquin "El Chapo" Guzman. And Pope Francis is on a historic trip to the Arabian Peninsula.]]></itunes:summary>
+      <itunes:image href="https://media.npr.org/assets/img/2019/02/04/thumbnail_3000x1688_wide-fde023c1eeb1861196a5f8346c7df5ee9d92e808.jpg?s=1400"/>
+      <itunes:duration>791</itunes:duration>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:episodeType>full</itunes:episodeType>
+      <content:encoded><![CDATA[Virginia's governor is under fire for a racist photo. Jury deliberations get underway for drug kingpin Joaquin "El Chapo" Guzman. And Pope Francis is on a historic trip to the Arabian Peninsula.]]></content:encoded>
+      <enclosure url="https://play.podtrac.com/npr-510318/npr.mc.tritondigital.com/NPR_510318/media/anon.npr-mp3/npr/upfirst/2019/02/20190204_upfirst_uf20419_v3.mp3?orgId=1&amp;d=791&amp;p=510318&amp;story=691216370&amp;t=podcast&amp;e=691216370&amp;ft=pod&amp;f=510318" length="12641355" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Friday, February 1st, 2019</title>
+      <description><![CDATA[The Senate voted to rebuke President Trump's decision to withdraw troops from Syria and Afghanistan. New disclosures in a lawsuit against Purdue Pharma allege that the company's owners pushed to sell higher doses of the highly addictive drug OxyContin. And a new experiment in the U.S. is aimed at creating gene-edited human embryos.]]></description>
+      <pubDate>Fri, 01 Feb 2019 05:54:52 -0500</pubDate>
+      <copyright>Copyright 2015-2018 NPR - For Personal Use Only</copyright>
+      <guid>c9b9fe84-80c5-4e40-bb1a-1b6a2b3e40ec</guid>
+      <itunes:title>Friday, February 1st, 2019</itunes:title>
+      <itunes:author>NPR</itunes:author>
+      <itunes:summary><![CDATA[The Senate voted to rebuke President Trump's decision to withdraw troops from Syria and Afghanistan. New disclosures in a lawsuit against Purdue Pharma allege that the company's owners pushed to sell higher doses of the highly addictive drug OxyContin. And a new experiment in the U.S. is aimed at creating gene-edited human embryos.]]></itunes:summary>
+      <itunes:image href="https://media.npr.org/assets/img/2019/02/01/thumbnail_3000x1688_wide-fde023c1eeb1861196a5f8346c7df5ee9d92e808.jpg?s=1400"/>
+      <itunes:duration>834</itunes:duration>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:episodeType>full</itunes:episodeType>
+      <content:encoded><![CDATA[The Senate voted to rebuke President Trump's decision to withdraw troops from Syria and Afghanistan. New disclosures in a lawsuit against Purdue Pharma allege that the company's owners pushed to sell higher doses of the highly addictive drug OxyContin. And a new experiment in the U.S. is aimed at creating gene-edited human embryos.]]></content:encoded>
+      <enclosure url="https://play.podtrac.com/npr-510318/npr.mc.tritondigital.com/NPR_510318/media/anon.npr-mp3/npr/upfirst/2019/02/20190201_upfirst_upfirst20119.mp3?orgId=1&amp;d=834&amp;p=510318&amp;story=690608449&amp;t=podcast&amp;e=690608449&amp;ft=pod&amp;f=510318" length="13320231" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Thursday, January 31st, 2019</title>
+      <description><![CDATA[The polar vortex is paralyzing the Midwest. At least eight people have died in the extreme cold. Facebook and Google are in hot water for paying users to download apps that monitor their phone usage. And the U.S. and China enter their final day in high-stakes trade talks. ]]></description>
+      <pubDate>Thu, 31 Jan 2019 06:05:25 -0500</pubDate>
+      <copyright>Copyright 2015-2018 NPR - For Personal Use Only</copyright>
+      <guid>24e7321c-783c-45ef-ac42-8601047db0eb</guid>
+      <itunes:title>Thursday, January 31st, 2019</itunes:title>
+      <itunes:author>NPR</itunes:author>
+      <itunes:summary><![CDATA[The polar vortex is paralyzing the Midwest. At least eight people have died in the extreme cold. Facebook and Google are in hot water for paying users to download apps that monitor their phone usage. And the U.S. and China enter their final day in high-stakes trade talks. ]]></itunes:summary>
+      <itunes:image href="https://media.npr.org/assets/img/2019/01/31/thumbnail_3000x1688_wide-fde023c1eeb1861196a5f8346c7df5ee9d92e808.jpg?s=1400"/>
+      <itunes:duration>826</itunes:duration>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:episodeType>full</itunes:episodeType>
+      <content:encoded><![CDATA[The polar vortex is paralyzing the Midwest. At least eight people have died in the extreme cold. Facebook and Google are in hot water for paying users to download apps that monitor their phone usage. And the U.S. and China enter their final day in high-stakes trade talks. ]]></content:encoded>
+      <enclosure url="https://play.podtrac.com/npr-510318/npr.mc.tritondigital.com/NPR_510318/media/anon.npr-mp3/npr/upfirst/2019/01/20190131_upfirst_upfirst13119.mp3?orgId=1&amp;d=826&amp;p=510318&amp;story=690231127&amp;t=podcast&amp;e=690231127&amp;ft=pod&amp;f=510318" length="13209309" type="audio/mpeg"/>
+    </item>
+    <item>
+      <title>Wednesday, January 30th, 2019</title>
+      <description><![CDATA[A crucial round of trade talks with China kicks off. And lawmakers meet to negotiate border security — and avoid another shutdown. The power struggle in Venezuela intensifies and could turn violent.]]></description>
+      <pubDate>Wed, 30 Jan 2019 06:00:56 -0500</pubDate>
+      <copyright>Copyright 2015-2018 NPR - For Personal Use Only</copyright>
+      <guid>3afe9b43-9963-48ce-907b-a74b11da4fee</guid>
+      <itunes:title>Wednesday, January 30th, 2019</itunes:title>
+      <itunes:author>NPR</itunes:author>
+      <itunes:summary><![CDATA[A crucial round of trade talks with China kicks off. And lawmakers meet to negotiate border security — and avoid another shutdown. The power struggle in Venezuela intensifies and could turn violent.]]></itunes:summary>
+      <itunes:image href="https://media.npr.org/assets/img/2019/01/30/thumbnail_3000x1688_wide-fde023c1eeb1861196a5f8346c7df5ee9d92e808.jpg?s=1400"/>
+      <itunes:duration>890</itunes:duration>
+      <itunes:explicit>no</itunes:explicit>
+      <itunes:episodeType>full</itunes:episodeType>
+      <content:encoded><![CDATA[A crucial round of trade talks with China kicks off. And lawmakers meet to negotiate border security — and avoid another shutdown. The power struggle in Venezuela intensifies and could turn violent.]]></content:encoded>
+      <enclosure url="https://play.podtrac.com/npr-510318/npr.mc.tritondigital.com/NPR_510318/media/anon.npr-mp3/npr/upfirst/2019/01/20190130_upfirst_upfirst13019.mp3?orgId=1&amp;d=890&amp;p=510318&amp;story=689868988&amp;t=podcast&amp;e=689868988&amp;ft=pod&amp;f=510318" length="14213028" type="audio/mpeg"/>
+    </item>
+  </channel>
+</rss>

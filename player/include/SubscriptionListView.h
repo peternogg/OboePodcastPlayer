@@ -2,11 +2,24 @@
 #define SUBSCRIPTIONLISTMODEL_H
 
 #include <QObject>
+#include <QAbstractListModel>
 
-class SubscriptionListModel : public QAbstractItemModel
+#include "SubscriptionManager.h"
+
+class SubscriptionListView : public QAbstractListModel
 {
+    Q_OBJECT
 public:
-    SubscriptionListModel();
+    SubscriptionListView(SubscriptionManager const* manager);
+    virtual ~SubscriptionListView() override;
+    virtual int rowCount(const QModelIndex &parent) const override;
+    virtual QVariant data(const QModelIndex &index, int role) const override;
+
+private slots:
+    void new_subscription_added();
+
+private:
+    SubscriptionManager const* _manager;
 };
 
 #endif // SUBSCRIPTIONLISTMODEL_H
