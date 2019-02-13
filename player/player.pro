@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -44,7 +44,8 @@ SOURCES += source/main.cpp \
     source/SubscriptionManager.cpp \
     source/SubscriptionListView.cpp \
     source/Podcast.cpp \
-    source/PodcastItem.cpp
+    source/PodcastItem.cpp \
+    include/Repository.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
@@ -60,7 +61,9 @@ HEADERS += include/OboeWindow.h \
     include/SubscriptionManager.h \
     include/SubscriptionListView.h \
     include/Podcast.h \
-    include/PodcastItem.h
+    include/PodcastItem.h \
+    include/Persistable.h \
+    include/Repository.h
 
 FORMS += \
         OboeWindow.ui
