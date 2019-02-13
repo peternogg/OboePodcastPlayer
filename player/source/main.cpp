@@ -26,5 +26,8 @@ int main(int argc, char *argv[])
 
     resp.store(&pers);
 
+    pers.setName("An updated name!");
+    resp.store(&pers);
+
     return a.exec();
 }
