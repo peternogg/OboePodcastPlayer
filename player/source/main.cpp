@@ -29,5 +29,8 @@ int main(int argc, char *argv[])
     pers.setName("An updated name!");
     resp.store(&pers);
 
+    auto* pastResp = resp.fetch<TestPersistable>(3);
+    qDebug() << "Fetched name is: " << pastResp->name();
+
     return a.exec();
 }

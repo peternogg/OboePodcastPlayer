@@ -10,7 +10,7 @@ bool Repository::store(Persistable *object) {
         return update(object);
 }
 
-///
+//
 bool Repository::insert(Persistable *object) {
     auto const metaobj = object->metaObject();
     QString names, params;
