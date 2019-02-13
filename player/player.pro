@@ -45,7 +45,7 @@ SOURCES += source/main.cpp \
     source/SubscriptionListView.cpp \
     source/Podcast.cpp \
     source/PodcastItem.cpp \
-    include/Repository.cpp
+    source/Repository.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
