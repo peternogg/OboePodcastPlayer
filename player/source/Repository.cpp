@@ -45,7 +45,6 @@ bool Repository::insert(Persistable *object) {
 
     // Ok!
     object->setId(query.lastInsertId().toInt());
-    qDebug() << "New id: " << object->id();
 
     return true;
 }

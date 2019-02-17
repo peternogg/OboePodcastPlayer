@@ -1,12 +1,12 @@
 #ifndef REPOSITORY_H
 #define REPOSITORY_H
 
-#include "Persistable.h"
-
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QSqlField>
 
+#include "Persistable.h"
+#include "Podcast.h"
 
 class Repository {
 public:

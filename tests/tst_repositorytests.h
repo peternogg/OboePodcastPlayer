@@ -5,6 +5,7 @@
 
 #include <QSqlDatabase>
 
+#include "Podcast.h"
 #include "PodcastItem.h"
 #include "Repository.h"
 
@@ -22,11 +23,24 @@ protected:
 
     void SetUp() override {
         ASSERT_TRUE(db.open());
+
+        clearTables(db);
     }
 
     virtual ~RepositoryTests() override {
         db.close();
         db.removeDatabase("QSQLITE");
+    }
+
+private:
+    void clearTables(QSqlDatabase& db) {
+        char const* const table_names[] = { "Podcast", "PodcastItem", };
+
+        for (auto name : table_names) {
+            QSqlQuery query(QString("delete from %1;").arg(name), db);
+            if (!query.exec())
+                qDebug() << query.lastError();
+        }
     }
 };
 
@@ -52,4 +66,30 @@ TEST_F(RepositoryTests, RepositoryPersistsAnEpisode)
     EXPECT_EQ(fetchedEpisode->guid(), guid);
     EXPECT_EQ(fetchedEpisode->title(), title);
     EXPECT_EQ(fetchedEpisode->description(), desc);
+}
+
+TEST_F(RepositoryTests, RepositoryPersistsAPodcast)
+{
+    Podcast* podcast = new Podcast();
+    Repository repo;
+
+    auto const title = "A test podcast";
+    auto const desc = "some text";
+    auto const link = "http://example.com";
+
+    podcast->setTitle(title);
+    podcast->setDescription(desc);
+    podcast->setLink(QUrl(link));
+    podcast->setLastUpdate(QDateTime::currentDateTime());
+
+    repo.store(podcast);
+    auto const id = podcast->id();
+
+    delete podcast;
+
+    Podcast* fetchedPodcast = repo.fetch<Podcast>(id);
+
+    EXPECT_EQ(fetchedPodcast->title(), title);
+    EXPECT_EQ(fetchedPodcast->description(), desc);
+    EXPECT_EQ(fetchedPodcast->link(), QUrl(link));
 }
