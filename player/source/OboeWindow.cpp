@@ -4,8 +4,11 @@
 OboeWindow::OboeWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::OboeWindow),
-    _manager{new SubscriptionManager{}}
+    _repo{},
+    _manager{new SubscriptionManager{_repo}}
 {
+    _manager->loadSubscriptions();
+
     ui->setupUi(this);
 
     ui->subscriptionsList->setModel(_manager);
@@ -45,7 +48,7 @@ OboeWindow::~OboeWindow()
 
 void OboeWindow::add_new_subscripion_by_url() {
     auto string = QInputDialog::getText(this, "Podcast RSS URL", "Please enter the URL of a podcast's RSS feed");
-    _manager->subscribe_to(string);
+    _manager->subscribeTo(string);
 }
 
 //void OboeWindow::on_new_subscription() {

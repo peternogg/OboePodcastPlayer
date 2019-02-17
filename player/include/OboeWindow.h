@@ -7,8 +7,7 @@
 #include <QMetaProperty>
 
 #include "SubscriptionManager.h"
-
-#include "Podcast.h"
+#include "Repository.h"
 
 namespace Ui {
 class OboeWindow;
@@ -24,6 +23,7 @@ public:
 
 private:
     Ui::OboeWindow *ui;
+    Repository _repo;
     SubscriptionManager* _manager;
 
 public slots:

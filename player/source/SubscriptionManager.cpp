@@ -1,18 +1,37 @@
 #include "SubscriptionManager.h"
 
-SubscriptionManager::SubscriptionManager()
-    : QAbstractTableModel(), _parser(), _subscriptions()
+SubscriptionManager::SubscriptionManager(Repository& repo)
+    : QAbstractTableModel(), _parser(), _subscriptions(), _repo(repo)
 {}
 
 SubscriptionManager::~SubscriptionManager() {}
 
-bool SubscriptionManager::subscribe_to(QString const& url) {
-    auto feed = _parser.parse_url(url.toStdString());
-    qDebug() << QString::fromStdString(feed.title) << ": " << QString::fromStdString(feed.pubDate);
+bool SubscriptionManager::subscribeTo(QString const& url) {
+    feedpp::feed feed;
+
+    try {
+        feed = _parser.parse_url(url.toStdString());
+    } catch (std::exception&) {
+        qDebug() << "Exception when adding subscription";
+        return false;
+    }
 
     auto const rows = static_cast<int>(_subscriptions.size());
+
     beginInsertRows(QModelIndex(), rows, rows);
     _subscriptions.push_back(new Podcast(feed));
+    _subscriptions.back()->setLastUpdate(QDateTime::currentDateTime());
+    endInsertRows();
+
+    _repo.store(_subscriptions.back());
+
+    return true;
+}
+
+bool SubscriptionManager::loadSubscriptions()
+{
+    _subscriptions = _repo.fetchAll<Podcast>();
+    beginInsertRows(QModelIndex(), 0, static_cast<int>(_subscriptions.size()));
     endInsertRows();
 
     return true;

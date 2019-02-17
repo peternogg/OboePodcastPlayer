@@ -13,6 +13,40 @@ public:
     bool store(Persistable* object);
 
     template <typename T>
+    std::vector<T*> fetchAll() const {
+        char const* const SELECT_QUERY = "SELECT * FROM %1";
+        std::vector<T*> objects;
+        objects.push_back(new T());
+
+        QSqlQuery query;
+        if (!query.prepare(QString(SELECT_QUERY).arg(objects.back()->table()))) {
+            qDebug() << query.lastError();
+            throw std::exception(); // FIXME: find something better
+        }
+
+        if (!query.exec()) {
+            qDebug() << query.lastError();
+            throw std::exception();
+        }
+
+        if (!query.first()) {
+            qDebug() << query.lastError();
+            throw std::exception();
+        }
+
+        do {
+            fillObject(objects.back(), query.record());
+            objects.push_back(new T());
+        } while(query.next());
+
+        // Clean up the extra object from the vector
+        delete objects.back();
+        objects.pop_back();
+
+        return objects;
+    }
+
+    template <typename T>
     T* fetch(long long id) const {
         char const* const SELECT_QUERY = "SELECT * FROM %1 WHERE id = :id";
         T* newObject = new T();
@@ -37,12 +71,7 @@ public:
             return nullptr; // FIXME: memory leak
         }
 
-        auto const record = query.record();
-        auto const metaobj = newObject->metaObject();
-        for (int index = metaobj->propertyOffset(); index < metaobj->propertyCount(); index++) {
-            auto prop = metaobj->property(index);
-            prop.write(newObject, record.value(prop.name()));
-        }
+        fillObject(newObject, query.record());
 
         return newObject;
     }
@@ -50,6 +79,15 @@ public:
 private:
     bool insert(Persistable* object);
     bool update(Persistable* object);
+
+    template <typename T>
+    void fillObject(T* object, QSqlRecord record) const {
+        auto const metaobj = object->metaObject();
+        for (int index = metaobj->propertyOffset(); index < metaobj->propertyCount(); index++) {
+            auto prop = metaobj->property(index);
+            prop.write(object, record.value(prop.name()));
+        }
+    }
 };
 
 #endif // REPOSITORY_H
