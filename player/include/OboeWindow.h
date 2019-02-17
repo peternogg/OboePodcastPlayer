@@ -26,7 +26,6 @@ public:
 private:
     Ui::OboeWindow *ui;
     SubscriptionManager* _manager;
-    SubscriptionListView* _managerView;
 
 public slots:
     void add_new_subscripion_by_url();

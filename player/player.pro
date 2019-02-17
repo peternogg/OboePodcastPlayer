@@ -42,7 +42,6 @@ SOURCES += source/main.cpp \
     feedpp/rss_parser.cpp \
     feedpp/utils.cpp \
     source/SubscriptionManager.cpp \
-    source/SubscriptionListView.cpp \
     source/Podcast.cpp \
     source/PodcastItem.cpp \
     source/Repository.cpp
@@ -59,7 +58,6 @@ HEADERS += include/OboeWindow.h \
     feedpp/types.h \
     feedpp/utils.h \
     include/SubscriptionManager.h \
-    include/SubscriptionListView.h \
     include/Podcast.h \
     include/PodcastItem.h \
     include/Persistable.h \

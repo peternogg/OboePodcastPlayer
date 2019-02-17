@@ -4,12 +4,13 @@
 OboeWindow::OboeWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::OboeWindow),
-    _manager{new SubscriptionManager{}},
-    _managerView{new SubscriptionListView{_manager}}
+    _manager{new SubscriptionManager{}}
 {
     ui->setupUi(this);
 
-    ui->subscriptionsList->setModel(_managerView);
+    ui->subscriptionsList->setModel(_manager);
+    ui->subscriptionsList->horizontalHeader()->setStretchLastSection(true);
+    ui->subscriptionsList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
     // Set up naviation actions
     ui->navSubscriptions->setDefaultAction(ui->goToSubscriptions);
