@@ -1,4 +1,4 @@
-#include "include/Repository.h"
+#include "Repository.h"
 
 static char const* const INSERT_QUERY = "INSERT INTO %1(%2) VALUES (%3)";
 static char const* const UPDATE_QUERY = "UPDATE %1 SET %2 WHERE id = :id";

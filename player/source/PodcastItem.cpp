@@ -1,5 +1,18 @@
 #include "PodcastItem.h"
 
+PodcastItem::PodcastItem(QObject* parent)
+    : QObject(parent),
+      _title{},
+      _description{},
+      _pubDate{},
+      _guid{},
+      _enclosureUrl{},
+      _enclosureType{},
+      _downloadPath{},
+      _listenedState{ListenedState::Unheard},
+      _downloadState{DownloadState::NotDownloaded}
+{ }
+
 PodcastItem::PodcastItem(feedpp::item const& data, QObject *parent)
     : QObject(parent),
       _title{QString::fromStdString(data.title)},
@@ -11,9 +24,7 @@ PodcastItem::PodcastItem(feedpp::item const& data, QObject *parent)
       _downloadPath{},
       _listenedState{ListenedState::Unheard},
       _downloadState{DownloadState::NotDownloaded}
-{
-
-}
+{ }
 
 PodcastItem::~PodcastItem() {}
 

@@ -11,6 +11,7 @@ class PodcastItem : public QObject
 {
     Q_GADGET
 public:
+    PodcastItem(QObject* parent = nullptr);
     PodcastItem(feedpp::item const& item, QObject *parent = nullptr);
     virtual ~PodcastItem();
 
