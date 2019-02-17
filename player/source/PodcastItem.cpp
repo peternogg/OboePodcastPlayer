@@ -1,7 +1,7 @@
 #include "PodcastItem.h"
 
 PodcastItem::PodcastItem(QObject* parent)
-    : QObject(parent),
+    : Persistable(parent),
       _title{},
       _description{},
       _pubDate{},
@@ -10,11 +10,12 @@ PodcastItem::PodcastItem(QObject* parent)
       _enclosureType{},
       _downloadPath{},
       _listenedState{ListenedState::Unheard},
-      _downloadState{DownloadState::NotDownloaded}
+      _downloadState{DownloadState::NotDownloaded},
+      _parentPodcast{0}
 { }
 
 PodcastItem::PodcastItem(feedpp::item const& data, QObject *parent)
-    : QObject(parent),
+    : Persistable(parent),
       _title{QString::fromStdString(data.title)},
       _description{QString::fromStdString(data.description)},
       _pubDate{QDateTime::fromString(QString::fromStdString(data.pubDate))},
@@ -23,7 +24,8 @@ PodcastItem::PodcastItem(feedpp::item const& data, QObject *parent)
       _enclosureType{QString::fromStdString(data.enclosure_type)},
       _downloadPath{},
       _listenedState{ListenedState::Unheard},
-      _downloadState{DownloadState::NotDownloaded}
+      _downloadState{DownloadState::NotDownloaded},
+      _parentPodcast{0}
 { }
 
 PodcastItem::~PodcastItem() {}
@@ -126,4 +128,14 @@ PodcastItem::DownloadState PodcastItem::downloadState() const
 void PodcastItem::setDownloadState(const DownloadState& downloadState)
 {
     _downloadState = downloadState;
+}
+
+qint64 PodcastItem::parentPodcast() const
+{
+    return _parentPodcast;
+}
+
+void PodcastItem::setParentPodcast(const qint64 &parentPodcast)
+{
+    _parentPodcast = parentPodcast;
 }
