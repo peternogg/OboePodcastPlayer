@@ -7,7 +7,6 @@
 #include <QMetaProperty>
 
 #include "SubscriptionManager.h"
-#include "SubscriptionListView.h"
 
 #include "Podcast.h"
 
