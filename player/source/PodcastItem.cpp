@@ -30,6 +30,10 @@ PodcastItem::PodcastItem(feedpp::item const& data, QObject *parent)
 
 PodcastItem::~PodcastItem() {}
 
+bool PodcastItem::isDifferentFrom(PodcastItem const& other) {
+    return other.guid() != _guid; // Is this sufficient?
+}
+
 QString PodcastItem::title() const
 {
     return _title;

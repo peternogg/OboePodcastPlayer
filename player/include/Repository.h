@@ -96,7 +96,7 @@ private:
     template <typename T>
     void fillObject(T* object, QSqlRecord record) const {
         auto const metaobj = object->metaObject();
-        for (int index = metaobj->propertyOffset(); index < metaobj->propertyCount(); index++) {
+        for (int index = metaobj->propertyOffset() - 1; index < metaobj->propertyCount(); index++) {
             auto prop = metaobj->property(index);
             prop.write(object, record.value(prop.name()));
         }

@@ -29,6 +29,21 @@ Podcast::Podcast(feedpp::feed const& data, QObject* parent)
 
 Podcast::~Podcast(){}
 
+bool Podcast::isDifferentFrom(Podcast const& other) const {
+    // Two podcasts differ if any of their fields or episodes differ
+    bool same = other.title() == _title;
+    same &= other.link() == _link;
+    same &= other.description() == _description;
+    // If the number of episodes is different, the two must differ
+    same &= other.items().size() == _items.size();
+
+    for (size_t index = 0; same && index < _items.size(); index++) {
+        same &= other.items()[index]->isDifferentFrom(_items[index]);
+    }
+
+    return !same;
+}
+
 QString Podcast::title() const
 {
     return _title;

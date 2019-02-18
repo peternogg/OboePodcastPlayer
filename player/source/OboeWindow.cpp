@@ -38,6 +38,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     });
 
     connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::add_new_subscripion_by_url);
+    connect(ui->actionUpdate_subscriptions, &QAction::triggered, _manager, &SubscriptionManager::checkForUpdates);
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 

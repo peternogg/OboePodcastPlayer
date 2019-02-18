@@ -26,12 +26,7 @@ bool SubscriptionManager::subscribeTo(QString const& url) {
 
     endInsertRows();
 
-    _repo.store(_subscriptions.back());
-    auto const* parent = _subscriptions.back();
-    for (auto episode : parent->items()) {
-        episode->setParentPodcast(parent->id());
-        _repo.store(episode);
-    }
+    storePodcast(_subscriptions.back());
 
     emit new_subscription_added();
 
@@ -45,6 +40,37 @@ bool SubscriptionManager::loadSubscriptions()
     endInsertRows();
 
     return true;
+}
+
+void SubscriptionManager::checkForUpdates() {
+    for (size_t index = 0; index < _subscriptions.size(); index++) {
+        auto* podcast = _subscriptions[index];
+        auto* updatedPodcast = new Podcast(_parser.parse_url(
+                                               podcast->updateLink().toString().toStdString()));
+
+        if (podcast->isDifferentFrom(*updatedPodcast)) {
+            updatedPodcast->setUpdateLink(podcast->updateLink());
+            updatedPodcast->setId(podcast->id());
+            updatedPodcast->setLastUpdate(QDateTime::currentDateTime());
+            storePodcast(updatedPodcast);
+
+            delete podcast;
+            _subscriptions[index] = updatedPodcast;
+
+            emit dataChanged(QModelIndex(), QModelIndex(), { Qt::DisplayRole, Qt::FontRole });
+        }
+    }
+}
+
+bool SubscriptionManager::storePodcast(Podcast* podcast) const {
+    _repo.store(podcast);
+    qDebug() << "storePodcast id = " << podcast->id();
+    for (auto episode : podcast->items()) {
+        episode->setParentPodcast(podcast->id());
+        _repo.store(episode);
+    }
+
+    return true; // FIXME: does nothing
 }
 
 int SubscriptionManager::rowCount(const QModelIndex &parent) const
@@ -70,6 +96,8 @@ QVariant SubscriptionManager::data(const QModelIndex &index, int role) const
         auto const* podcast = _subscriptions.at(static_cast<size_t>(index.row()));
 
         switch(index.column()) {
+        case 0:
+            return podcast->updateLink();
         case 1:
             return podcast->title();
         case 2:

@@ -33,10 +33,15 @@ public:
 signals:
     void new_subscription_added();
 
+public slots:
+    void checkForUpdates();
+
 private:
     feedpp::parser _parser;
     std::vector<Podcast*> _subscriptions;
     Repository& _repo;
+
+    bool storePodcast(Podcast* podcast) const;
 };
 
 #endif // SUBSCRIPTIONMANAGER_H

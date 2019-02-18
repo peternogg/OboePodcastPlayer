@@ -58,6 +58,8 @@ public:
     void setDownloadState(const DownloadState& downloadState);
     void setParentPodcast(const qint64 &parentPodcast);
 
+    bool isDifferentFrom(PodcastItem const& other);
+
     virtual QString table() const override { return "PodcastItem"; }
 
 private:

@@ -236,6 +236,7 @@
      <string>Subscriptions</string>
     </property>
     <addaction name="actionAdd_URL"/>
+    <addaction name="actionUpdate_subscriptions"/>
    </widget>
    <addaction name="menuSubscriptions"/>
   </widget>
@@ -274,6 +275,11 @@
   <action name="actionAdd_URL">
    <property name="text">
     <string>Add URL</string>
+   </property>
+  </action>
+  <action name="actionUpdate_subscriptions">
+   <property name="text">
+    <string>Update subscriptions</string>
    </property>
   </action>
  </widget>

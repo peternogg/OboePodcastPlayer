@@ -38,6 +38,8 @@ public:
     void setLastUpdate(const QDateTime &lastUpdate);
     void setUpdateLink(const QUrl& updateLink);
 
+    bool isDifferentFrom(Podcast const& other) const;
+
     virtual QString table() const override { return "Podcast"; }
 
 private:
