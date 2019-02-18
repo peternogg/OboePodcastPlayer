@@ -3,7 +3,8 @@ create table Podcast (
     title           text,
     link            text not null,
     description     text,
-    lastUpdate      date not null
+    lastUpdate      date not null,
+    updateLink      text
 );
 
 create table PodcastItem (

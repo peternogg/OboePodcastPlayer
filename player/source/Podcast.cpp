@@ -8,6 +8,7 @@ Podcast::Podcast(QObject* parent)
       _link{},
       _description{},
       _lastUpdate{},
+      _updateLink{},
       _items{}
 {}
 
@@ -17,6 +18,7 @@ Podcast::Podcast(feedpp::feed const& data, QObject* parent)
       _link{QString::fromStdString(data.link)},
       _description{QString::fromStdString(data.description)},
       _lastUpdate{},
+      _updateLink{},
       _items{}
 {
     // Map data.items => PodcastItems
@@ -69,4 +71,14 @@ void Podcast::setDescription(const QString &description)
 void Podcast::setLastUpdate(const QDateTime &lastUpdate)
 {
     _lastUpdate = lastUpdate;
+}
+
+QUrl Podcast::updateLink() const
+{
+    return _updateLink;
+}
+
+void Podcast::setUpdateLink(const QUrl& updateLink)
+{
+    _updateLink = updateLink;
 }

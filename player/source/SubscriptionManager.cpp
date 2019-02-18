@@ -19,11 +19,21 @@ bool SubscriptionManager::subscribeTo(QString const& url) {
     auto const rows = static_cast<int>(_subscriptions.size());
 
     beginInsertRows(QModelIndex(), rows, rows);
+
     _subscriptions.push_back(new Podcast(feed));
     _subscriptions.back()->setLastUpdate(QDateTime::currentDateTime());
+    _subscriptions.back()->setUpdateLink(url);
+
     endInsertRows();
 
     _repo.store(_subscriptions.back());
+    auto const* parent = _subscriptions.back();
+    for (auto episode : parent->items()) {
+        episode->setParentPodcast(parent->id());
+        _repo.store(episode);
+    }
+
+    emit new_subscription_added();
 
     return true;
 }

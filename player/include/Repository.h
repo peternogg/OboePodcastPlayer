@@ -30,8 +30,11 @@ public:
         }
 
         if (!query.first()) {
-            qDebug() << query.lastError();
-            throw std::exception();
+            if (auto err = query.lastError(); err.isValid()) {
+                qDebug() << err;
+                throw std::exception();
+            }
+            return {}; // Nothing in the search set
         }
 
         do {
@@ -74,6 +77,16 @@ public:
         fillObject(newObject, query.record());
 
         return newObject;
+    }
+
+    template <typename Iter>
+    bool storeAll(Iter begin, Iter end) {
+        bool storeOk = true;
+        for (; storeOk && begin != end; begin++) {
+            storeOk &= store(*begin);
+        }
+
+        return storeOk;
     }
 
 private:
