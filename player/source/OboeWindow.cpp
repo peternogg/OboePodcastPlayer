@@ -38,7 +38,10 @@ OboeWindow::OboeWindow(QWidget *parent) :
     });
 
     connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::add_new_subscripion_by_url);
+    connect(ui->actionUpdate_subscriptions, &QAction::triggered, this, &OboeWindow::startUpdatingSubscriptions);
     connect(ui->actionUpdate_subscriptions, &QAction::triggered, _manager, &SubscriptionManager::checkForUpdates);
+    connect(_manager, &SubscriptionManager::finishedUpdateSubscriptions, this, &OboeWindow::finishedUpdatingSubscriptions);
+
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
@@ -50,6 +53,14 @@ OboeWindow::~OboeWindow()
 void OboeWindow::add_new_subscripion_by_url() {
     auto string = QInputDialog::getText(this, "Podcast RSS URL", "Please enter the URL of a podcast's RSS feed");
     _manager->subscribeTo(string);
+}
+
+void OboeWindow::startUpdatingSubscriptions() {
+    statusBar()->showMessage("Checking for updates...");
+}
+
+void OboeWindow::finishedUpdatingSubscriptions() {
+    statusBar()->showMessage("Finished updating.", 60 * 1000);
 }
 
 //void OboeWindow::on_new_subscription() {

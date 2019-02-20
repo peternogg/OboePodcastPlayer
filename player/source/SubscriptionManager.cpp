@@ -1,8 +1,15 @@
 #include "SubscriptionManager.h"
 
 SubscriptionManager::SubscriptionManager(Repository& repo)
-    : QAbstractTableModel(), _parser(), _subscriptions(), _repo(repo)
-{}
+    : QAbstractTableModel(),
+      _parser(),
+      _subscriptions(),
+      _updateWatcher(),
+      _repo(repo)
+{
+    connect(&_updateWatcher, &QFutureWatcher<std::vector<Podcast*>*>::finished,
+            this, &SubscriptionManager::updateFinished);
+}
 
 SubscriptionManager::~SubscriptionManager() {}
 
@@ -28,7 +35,7 @@ bool SubscriptionManager::subscribeTo(QString const& url) {
 
     storePodcast(_subscriptions.back());
 
-    emit new_subscription_added();
+    emit newSubscriptionAdded();
 
     return true;
 }
@@ -43,6 +50,16 @@ bool SubscriptionManager::loadSubscriptions()
 }
 
 void SubscriptionManager::checkForUpdates() {
+    _updateWatcher.setFuture(QtConcurrent::run(this, &SubscriptionManager::doUpdate));
+    emit startedUpdateSubscriptions();
+}
+
+void SubscriptionManager::doUpdate() {
+    QSqlDatabase db = QSqlDatabase::database("update");
+    if (!db.isOpen()) {
+        qDebug() << db.lastError();
+    }
+
     for (size_t index = 0; index < _subscriptions.size(); index++) {
         auto* podcast = _subscriptions[index];
         auto* updatedPodcast = new Podcast(_parser.parse_url(
@@ -56,10 +73,13 @@ void SubscriptionManager::checkForUpdates() {
 
             delete podcast;
             _subscriptions[index] = updatedPodcast;
-
-            emit dataChanged(QModelIndex(), QModelIndex(), { Qt::DisplayRole, Qt::FontRole });
         }
     }
+}
+
+void SubscriptionManager::updateFinished() {
+    emit dataChanged(QModelIndex(), QModelIndex(), { Qt::DisplayRole, Qt::FontRole });
+    emit finishedUpdateSubscriptions();
 }
 
 bool SubscriptionManager::storePodcast(Podcast* podcast) const {

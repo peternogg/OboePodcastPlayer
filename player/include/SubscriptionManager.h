@@ -1,4 +1,4 @@
-#ifndef SUBSCRIPTIONMANAGER_H
+﻿#ifndef SUBSCRIPTIONMANAGER_H
 #define SUBSCRIPTIONMANAGER_H
 
 #include <QDebug>
@@ -7,6 +7,7 @@
 #include <QAbstractTableModel>
 #include <QMetaObject>
 #include <QFont>
+#include <QtConcurrent>
 
 #include "feedpp.h"
 #include "parser.h"
@@ -31,17 +32,25 @@ public:
     std::vector<Podcast*> const& subscriptions() const { return _subscriptions; }
 
 signals:
-    void new_subscription_added();
+    void newSubscriptionAdded();
+
+    void startedUpdateSubscriptions();
+    void finishedUpdateSubscriptions();
 
 public slots:
     void checkForUpdates();
 
+private slots:
+    void updateFinished();
+
 private:
     feedpp::parser _parser;
     std::vector<Podcast*> _subscriptions;
+    QFutureWatcher<void> _updateWatcher;
     Repository& _repo;
 
     bool storePodcast(Podcast* podcast) const;
+    void doUpdate();
 };
 
 #endif // SUBSCRIPTIONMANAGER_H

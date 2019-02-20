@@ -3,15 +3,15 @@
 static char const* const INSERT_QUERY = "INSERT INTO %1(%2) VALUES (%3)";
 static char const* const UPDATE_QUERY = "UPDATE %1 SET %2 WHERE id = :id";
 
-bool Repository::store(Persistable *object) {
+bool Repository::store(Persistable *object, QSqlDatabase db) {
     if (object->id() < 0)
-        return insert(object);
+        return insert(object, db);
     else
-        return update(object);
+        return update(object, db);
 }
 
 //
-bool Repository::insert(Persistable *object) {
+bool Repository::insert(Persistable *object, QSqlDatabase db) {
     auto const metaobj = object->metaObject();
     QString names, params;
     // Build column name list and placeholders for query
@@ -26,7 +26,7 @@ bool Repository::insert(Persistable *object) {
     params.append(':').append(metaobj->property(metaobj->propertyCount() - 1).name());
 
 
-    QSqlQuery query;
+    QSqlQuery query(QString(), db);
     if (!query.prepare(QString(INSERT_QUERY).arg(object->table(), names, params))) {
         qDebug() << query.lastError();
         return false;
@@ -49,7 +49,7 @@ bool Repository::insert(Persistable *object) {
     return true;
 }
 
-bool Repository::update(Persistable *object) {
+bool Repository::update(Persistable *object, QSqlDatabase db) {
     auto const metaobj = object->metaObject();
     QString columnSpec;
 
@@ -61,7 +61,7 @@ bool Repository::update(Persistable *object) {
     columnSpec.append(QString("%1 = :%1").arg(
                           metaobj->property(metaobj->propertyCount() - 1).name()));
 
-    QSqlQuery query;
+    QSqlQuery query(QString(), db);
     if (!query.prepare(QString(UPDATE_QUERY).arg(object->table(), columnSpec))) {
         qDebug() << query.lastError();
         return false;

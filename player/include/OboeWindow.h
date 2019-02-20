@@ -26,8 +26,11 @@ private:
     Repository _repo;
     SubscriptionManager* _manager;
 
+
 public slots:
     void add_new_subscripion_by_url();
+    void startUpdatingSubscriptions();
+    void finishedUpdatingSubscriptions();
 };
 
 #endif // OBOEWINDOW_H

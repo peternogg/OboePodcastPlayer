@@ -10,15 +10,15 @@
 
 class Repository {
 public:
-    bool store(Persistable* object);
+    bool store(Persistable* object, QSqlDatabase db = QSqlDatabase::database());
 
     template <typename T>
-    std::vector<T*> fetchAll() const {
+    std::vector<T*> fetchAll(QSqlDatabase db = QSqlDatabase::database()) const {
         char const* const SELECT_QUERY = "SELECT * FROM %1";
         std::vector<T*> objects;
         objects.push_back(new T());
 
-        QSqlQuery query;
+        QSqlQuery query(QString(), db);
         if (!query.prepare(QString(SELECT_QUERY).arg(objects.back()->table()))) {
             qDebug() << query.lastError();
             throw std::exception(); // FIXME: find something better
@@ -80,18 +80,18 @@ public:
     }
 
     template <typename Iter>
-    bool storeAll(Iter begin, Iter end) {
+    bool storeAll(Iter begin, Iter end, QSqlDatabase db = QSqlDatabase::database()) {
         bool storeOk = true;
         for (; storeOk && begin != end; begin++) {
-            storeOk &= store(*begin);
+            storeOk &= store(*begin, db);
         }
 
         return storeOk;
     }
 
 private:
-    bool insert(Persistable* object);
-    bool update(Persistable* object);
+    bool insert(Persistable* object, QSqlDatabase db);
+    bool update(Persistable* object, QSqlDatabase db);
 
     template <typename T>
     void fillObject(T* object, QSqlRecord record) const {

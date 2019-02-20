@@ -15,6 +15,11 @@ int main(int argc, char *argv[])
     db.setDatabaseName(DATABASE_NAME);
     db.open();
 
+    // Prep thread database connection
+    db = QSqlDatabase::addDatabase("QSQLITE", "update");
+    db.setDatabaseName(DATABASE_NAME);
+    // Leave it closed
+
     OboeWindow w;
     w.show();
 

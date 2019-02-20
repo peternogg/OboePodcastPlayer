@@ -240,6 +240,7 @@
    </widget>
    <addaction name="menuSubscriptions"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="goToSubscriptions">
    <property name="text">
     <string>Go To Subscriptions Page</string>
