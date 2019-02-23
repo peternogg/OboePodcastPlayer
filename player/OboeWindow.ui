@@ -118,6 +118,35 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="EpisodesPage">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QTableView" name="episodeView">
+          <property name="showGrid">
+           <bool>true</bool>
+          </property>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
     <item row="0" column="0">
@@ -282,8 +311,16 @@
     <string>Update subscriptions</string>
    </property>
   </action>
+  <action name="goToEpisodeView">
+   <property name="text">
+    <string>Go To Episode View</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
+ <slots>
+  <slot>showPodcastEpisodes(QModelIndex)</slot>
+ </slots>
 </ui>

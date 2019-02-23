@@ -50,6 +50,44 @@ public:
     }
 
     template <typename T>
+    std::vector<T*> fetchChildrenOf(Persistable* parent, QString parentReference = "parentPodcast") {
+        char const* const SELECT_QUERY = "SELECT * FROM %1 WHERE %2 = :id";
+        std::vector<T*> children;
+        children.push_back(new T());
+
+        QSqlQuery query;
+        if(!query.prepare(QString(SELECT_QUERY).arg(children.back()->table(), parentReference))) {
+            qDebug() << query.lastError();
+            throw std::exception(); // FIXME: find something better
+        }
+
+        query.bindValue(":id", parent->id());
+
+        if (!query.exec()) {
+            qDebug() << query.lastError();
+            throw std::exception();
+        }
+
+        if (!query.first()) {
+            if (auto err = query.lastError(); err.isValid()) {
+                qDebug() << err;
+                throw std::exception();
+            }
+            return {}; // Nothing in the search set
+        }
+
+        do {
+            fillObject(children.back(), query.record());
+            children.push_back(new T());
+        } while (query.next());
+
+        delete children.back();
+        children.pop_back();
+
+        return children;
+    }
+
+    template <typename T>
     T* fetch(long long id) const {
         char const* const SELECT_QUERY = "SELECT * FROM %1 WHERE id = :id";
         T* newObject = new T();

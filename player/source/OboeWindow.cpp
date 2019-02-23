@@ -15,6 +15,9 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->subscriptionsList->horizontalHeader()->setStretchLastSection(true);
     ui->subscriptionsList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
+    ui->episodeView->horizontalHeader()->setStretchLastSection(true);
+    ui->episodeView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+
     // Set up naviation actions
     ui->navSubscriptions->setDefaultAction(ui->goToSubscriptions);
     ui->navSearch->setDefaultAction(ui->goToSearch);
@@ -37,8 +40,13 @@ OboeWindow::OboeWindow(QWidget *parent) :
        this->ui->stackedWidget->setCurrentIndex(4);
     });
 
+    connect(ui->goToEpisodeView, &QAction::triggered, [this]() {
+        this->ui->stackedWidget->setCurrentIndex(5);
+    });
+
     connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::add_new_subscripion_by_url);
     connect(ui->actionUpdate_subscriptions, &QAction::triggered, _manager, &SubscriptionManager::checkForUpdates);
+    connect(ui->subscriptionsList, &QTableView::doubleClicked, this, &OboeWindow::showPodcastEpisodes);
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
@@ -55,3 +63,11 @@ void OboeWindow::add_new_subscripion_by_url() {
 //void OboeWindow::on_new_subscription() {
 
 //}
+
+void OboeWindow::showPodcastEpisodes(const QModelIndex &index)
+{
+    auto* model = _manager->episodesFor(index);
+    ui->episodeView->setModel(model);
+
+    ui->goToEpisodeView->trigger();
+}

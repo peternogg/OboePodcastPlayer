@@ -28,6 +28,8 @@ private:
 
 public slots:
     void add_new_subscripion_by_url();
+private slots:
+    void showPodcastEpisodes(const QModelIndex &index);
 };
 
 #endif // OBOEWINDOW_H

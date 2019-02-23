@@ -29,13 +29,14 @@ public:
     QUrl link() const;
     QString description() const;
     QDateTime lastUpdate() const;
-    std::vector<PodcastItem*> items() const;
+    std::vector<PodcastItem*> const& items() const;
     QUrl updateLink() const;
 
     void setTitle(const QString &title);
     void setLink(const QUrl &link);
     void setDescription(const QString &description);
     void setLastUpdate(const QDateTime &lastUpdate);
+    void setItems(std::vector<PodcastItem*> const& items);
     void setUpdateLink(const QUrl& updateLink);
 
     bool isDifferentFrom(Podcast const& other) const;

@@ -23,6 +23,8 @@ public:
     bool subscribeTo(QString const& url);
     bool loadSubscriptions();
 
+    QAbstractTableModel* episodesFor(QModelIndex const& index) const;
+
     virtual int rowCount(const QModelIndex &parent) const override;
     virtual int columnCount(const QModelIndex &parent) const override;
     virtual QVariant data(const QModelIndex &index, int role) const override;
@@ -42,6 +44,20 @@ private:
     Repository& _repo;
 
     bool storePodcast(Podcast* podcast) const;
+};
+
+class EpisodeModel : public QAbstractTableModel {
+    Q_OBJECT
+public:
+    EpisodeModel(Podcast* podcast);
+    virtual ~EpisodeModel() override;
+
+    virtual int rowCount(const QModelIndex &parent) const override;
+    virtual int columnCount(const QModelIndex &parent) const override;
+    virtual QVariant data(const QModelIndex &index, int role) const override;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+private:
+    Podcast* _source;
 };
 
 #endif // SUBSCRIPTIONMANAGER_H

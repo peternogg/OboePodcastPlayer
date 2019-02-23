@@ -36,6 +36,10 @@ bool SubscriptionManager::subscribeTo(QString const& url) {
 bool SubscriptionManager::loadSubscriptions()
 {
     _subscriptions = _repo.fetchAll<Podcast>();
+    for (auto* subscription : _subscriptions) {
+        subscription->setItems(_repo.fetchChildrenOf<PodcastItem>(subscription));
+    }
+
     beginInsertRows(QModelIndex(), 0, static_cast<int>(_subscriptions.size()));
     endInsertRows();
 
@@ -71,6 +75,13 @@ bool SubscriptionManager::storePodcast(Podcast* podcast) const {
     }
 
     return true; // FIXME: does nothing
+}
+
+QAbstractTableModel* SubscriptionManager::episodesFor(QModelIndex const& index) const {
+    if (index.row() >= static_cast<int>(_subscriptions.size()))
+        return nullptr;
+
+    return new EpisodeModel(_subscriptions[index.row()]);
 }
 
 int SubscriptionManager::rowCount(const QModelIndex &parent) const
@@ -134,4 +145,65 @@ QVariant SubscriptionManager::headerData(int section, Qt::Orientation orientatio
     }
 
     return {};
+}
+
+EpisodeModel::EpisodeModel(Podcast* source)
+    : QAbstractTableModel(), _source(source)
+{}
+
+EpisodeModel::~EpisodeModel()
+{}
+
+int EpisodeModel::rowCount(const QModelIndex &parent) const
+{
+    if (parent.isValid())
+        return 0;
+
+    return static_cast<int>(_source->items().size());
+}
+
+int EpisodeModel::columnCount(const QModelIndex &parent) const
+{
+    if (parent.isValid())
+        return 0;
+
+    // Title, Description, Length
+    return 3;
+}
+
+QVariant EpisodeModel::data(const QModelIndex &index, int role) const
+{
+    if (role != Qt::DisplayRole)
+        return {};
+
+    switch(index.column()) {
+    case 0:
+        return _source->items().at(static_cast<size_t>(index.row()))->title();
+    case 1:
+        return _source->items().at(static_cast<size_t>(index.row()))->description();
+    case 2:
+        return _source->items().at(static_cast<size_t>(index.row()))->enclosureUrl();
+    default:
+        return {};
+    }
+}
+
+
+QVariant EpisodeModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (orientation == Qt::Vertical)
+        return {};
+
+    if (role != Qt::DisplayRole)
+        return {};
+
+    switch (section) {
+    case 0:
+        return "Title";
+    case 1:
+        return "Description";
+    case 2:
+        return "Download URL";
+    default:
+        return {};
+    }
 }

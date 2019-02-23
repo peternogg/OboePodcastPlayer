@@ -64,7 +64,7 @@ QDateTime Podcast::lastUpdate() const
     return _lastUpdate;
 }
 
-std::vector<PodcastItem*> Podcast::items() const {
+std::vector<PodcastItem*> const& Podcast::items() const {
     return _items;
 }
 
@@ -86,6 +86,10 @@ void Podcast::setDescription(const QString &description)
 void Podcast::setLastUpdate(const QDateTime &lastUpdate)
 {
     _lastUpdate = lastUpdate;
+}
+
+void Podcast::setItems(std::vector<PodcastItem*> const& items) {
+    _items = items;
 }
 
 QUrl Podcast::updateLink() const
