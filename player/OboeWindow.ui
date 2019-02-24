@@ -316,6 +316,16 @@
     <string>Go To Episode View</string>
    </property>
   </action>
+  <action name="downloadEpisode">
+   <property name="text">
+    <string>Download this episode</string>
+   </property>
+  </action>
+  <action name="deleteDownloadedEpisode">
+   <property name="text">
+    <string>Delete downloaded episode</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

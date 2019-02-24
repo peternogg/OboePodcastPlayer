@@ -180,9 +180,9 @@ QVariant EpisodeModel::data(const QModelIndex &index, int role) const
     case 0:
         return _source->items().at(static_cast<size_t>(index.row()))->title();
     case 1:
-        return _source->items().at(static_cast<size_t>(index.row()))->description();
-    case 2:
         return _source->items().at(static_cast<size_t>(index.row()))->enclosureUrl();
+    case 2:
+        return _source->items().at(static_cast<size_t>(index.row()))->description();
     default:
         return {};
     }
@@ -200,9 +200,9 @@ QVariant EpisodeModel::headerData(int section, Qt::Orientation orientation, int 
     case 0:
         return "Title";
     case 1:
-        return "Description";
-    case 2:
         return "Download URL";
+    case 2:
+        return "Description";
     default:
         return {};
     }

@@ -5,7 +5,8 @@ OboeWindow::OboeWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::OboeWindow),
     _repo{},
-    _manager{new SubscriptionManager{_repo}}
+    _manager{new SubscriptionManager{_repo}},
+    _menu{new QMenu(this)}
 {
     _manager->loadSubscriptions();
 
@@ -17,6 +18,12 @@ OboeWindow::OboeWindow(QWidget *parent) :
 
     ui->episodeView->horizontalHeader()->setStretchLastSection(true);
     ui->episodeView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+    //ui->episodeView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->episodeView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->episodeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    _menu->addAction(ui->downloadEpisode);
+    _menu->addAction(ui->deleteDownloadedEpisode);
 
     // Set up naviation actions
     ui->navSubscriptions->setDefaultAction(ui->goToSubscriptions);
@@ -47,6 +54,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::add_new_subscripion_by_url);
     connect(ui->actionUpdate_subscriptions, &QAction::triggered, _manager, &SubscriptionManager::checkForUpdates);
     connect(ui->subscriptionsList, &QTableView::doubleClicked, this, &OboeWindow::showPodcastEpisodes);
+    connect(ui->episodeView, &QTableView::customContextMenuRequested, this, &OboeWindow::showEpisodeContextMenu);
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
@@ -70,4 +78,8 @@ void OboeWindow::showPodcastEpisodes(const QModelIndex &index)
     ui->episodeView->setModel(model);
 
     ui->goToEpisodeView->trigger();
+}
+
+void OboeWindow::showEpisodeContextMenu(QPoint const& pos) {
+    _menu->exec(ui->episodeView->viewport()->mapToGlobal(pos));
 }

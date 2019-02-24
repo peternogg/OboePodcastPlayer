@@ -25,11 +25,13 @@ private:
     Ui::OboeWindow *ui;
     Repository _repo;
     SubscriptionManager* _manager;
+    QMenu* _menu;
 
 public slots:
     void add_new_subscripion_by_url();
 private slots:
     void showPodcastEpisodes(const QModelIndex &index);
+    void showEpisodeContextMenu(QPoint const& pos);
 };
 
 #endif // OBOEWINDOW_H
