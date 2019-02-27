@@ -12,6 +12,7 @@
 #include "parser.h"
 #include "Podcast.h"
 #include "Repository.h"
+#include "DownloadManager.h"
 
 class SubscriptionManager : public QAbstractTableModel
 {
@@ -22,6 +23,8 @@ public:
 
     bool subscribeTo(QString const& url);
     bool loadSubscriptions();
+
+    void download(PodcastItem* item);
 
     QAbstractTableModel* episodesFor(QModelIndex const& index) const;
 
@@ -42,6 +45,7 @@ private:
     feedpp::parser _parser;
     std::vector<Podcast*> _subscriptions;
     Repository& _repo;
+    DownloadManager _downloadManager;
 
     bool storePodcast(Podcast* podcast) const;
 };
@@ -51,6 +55,8 @@ class EpisodeModel : public QAbstractTableModel {
 public:
     EpisodeModel(Podcast* podcast);
     virtual ~EpisodeModel() override;
+
+    PodcastItem* episodeFor(QModelIndex const& index);
 
     virtual int rowCount(const QModelIndex &parent) const override;
     virtual int columnCount(const QModelIndex &parent) const override;

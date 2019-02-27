@@ -5,6 +5,7 @@
 #include <QInputDialog>
 #include <QMainWindow>
 #include <QMetaProperty>
+#include <QStatusBar>
 
 #include "SubscriptionManager.h"
 #include "Repository.h"
@@ -26,10 +27,11 @@ private:
     Repository _repo;
     SubscriptionManager* _manager;
     QMenu* _menu;
+    QPoint _lastSelectedPosition;
 
-public slots:
-    void add_new_subscripion_by_url();
 private slots:
+    void episodeDownloadRequested();
+    void addNewSubscriptionByUrl();
     void showPodcastEpisodes(const QModelIndex &index);
     void showEpisodeContextMenu(QPoint const& pos);
 };

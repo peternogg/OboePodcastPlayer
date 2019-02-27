@@ -6,7 +6,8 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui(new Ui::OboeWindow),
     _repo{},
     _manager{new SubscriptionManager{_repo}},
-    _menu{new QMenu(this)}
+    _menu{new QMenu(this)},
+    _lastSelectedPosition()
 {
     _manager->loadSubscriptions();
 
@@ -51,7 +52,8 @@ OboeWindow::OboeWindow(QWidget *parent) :
         this->ui->stackedWidget->setCurrentIndex(5);
     });
 
-    connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::add_new_subscripion_by_url);
+    connect(ui->downloadEpisode, &QAction::triggered, this, &OboeWindow::episodeDownloadRequested);
+    connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::addNewSubscriptionByUrl);
     connect(ui->actionUpdate_subscriptions, &QAction::triggered, _manager, &SubscriptionManager::checkForUpdates);
     connect(ui->subscriptionsList, &QTableView::doubleClicked, this, &OboeWindow::showPodcastEpisodes);
     connect(ui->episodeView, &QTableView::customContextMenuRequested, this, &OboeWindow::showEpisodeContextMenu);
@@ -63,7 +65,18 @@ OboeWindow::~OboeWindow()
     delete ui;
 }
 
-void OboeWindow::add_new_subscripion_by_url() {
+void OboeWindow::episodeDownloadRequested() {
+    QModelIndex selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
+    auto* const episode = static_cast<EpisodeModel*>(ui->episodeView->model())->episodeFor(selectedItem);
+
+    if (episode == nullptr) {
+        statusBar()->showMessage("Error: Failed to download podcast.");
+    } else {
+        _manager->download(episode);
+    }
+}
+
+void OboeWindow::addNewSubscriptionByUrl() {
     auto string = QInputDialog::getText(this, "Podcast RSS URL", "Please enter the URL of a podcast's RSS feed");
     _manager->subscribeTo(string);
 }
@@ -81,5 +94,6 @@ void OboeWindow::showPodcastEpisodes(const QModelIndex &index)
 }
 
 void OboeWindow::showEpisodeContextMenu(QPoint const& pos) {
+    _lastSelectedPosition = pos;
     _menu->exec(ui->episodeView->viewport()->mapToGlobal(pos));
 }

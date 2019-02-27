@@ -1,7 +1,11 @@
 #include "SubscriptionManager.h"
 
 SubscriptionManager::SubscriptionManager(Repository& repo)
-    : QAbstractTableModel(), _parser(), _subscriptions(), _repo(repo)
+    : QAbstractTableModel(),
+      _parser(),
+      _subscriptions(),
+      _repo(repo),
+      _downloadManager(new QNetworkAccessManager(), this)
 {}
 
 SubscriptionManager::~SubscriptionManager() {}
@@ -44,6 +48,13 @@ bool SubscriptionManager::loadSubscriptions()
     endInsertRows();
 
     return true;
+}
+
+void SubscriptionManager::download(PodcastItem* item) {
+
+    item->setDownloadPath(_downloadManager.downloadLocation()
+                          + "/" + item->enclosureUrl().fileName());
+    _downloadManager.startDownload(item);
 }
 
 void SubscriptionManager::checkForUpdates() {
@@ -153,6 +164,13 @@ EpisodeModel::EpisodeModel(Podcast* source)
 
 EpisodeModel::~EpisodeModel()
 {}
+
+PodcastItem* EpisodeModel::episodeFor(const QModelIndex &index) {
+    if (index.row() >= static_cast<int>(_source->items().size()))
+        return nullptr;
+
+    return _source->items()[static_cast<size_t>(index.row())];
+}
 
 int EpisodeModel::rowCount(const QModelIndex &parent) const
 {
