@@ -1,7 +1,7 @@
 #include "ItemDownload.h"
 
 ItemDownload::ItemDownload(PodcastItem* podcast, QNetworkReply* download, QObject *parent)
-    : QObject(parent), _podcast(podcast), _download(download), _downloadFile(podcast->downloadPath())
+    : QObject(parent), _item(podcast), _download(download), _downloadFile(podcast->downloadPath())
 {
     qDebug() << podcast->downloadPath();
     if (!_downloadFile.open(QFile::WriteOnly)) {
@@ -15,10 +15,13 @@ ItemDownload::ItemDownload(PodcastItem* podcast, QNetworkReply* download, QObjec
 }
 
 void ItemDownload::finished() {
-    emit downloadFinished();
-    qDebug() << "finished downloading " << _podcast->title();
+    qDebug() << "finished downloading " << _item->title();
     _downloadFile.write(_download->readAll());
     _downloadFile.close();
+
+    _item->setDownloadState(PodcastItem::DownloadState::Downloaded);
+
+    emit downloadFinished(_item);
 }
 
 void ItemDownload::dataAvailable() {
@@ -27,4 +30,24 @@ void ItemDownload::dataAvailable() {
 
 void ItemDownload::downloadProgress(quint64 downloaded, qint64 total) {
     qDebug() << QString("%1 out of %2 finished").arg(downloaded).arg(total);
+}
+
+QNetworkReply *ItemDownload::download() const
+{
+    return _download;
+}
+
+void ItemDownload::setDownload(QNetworkReply *download)
+{
+    _download = download;
+}
+
+PodcastItem *ItemDownload::item() const
+{
+    return _item;
+}
+
+void ItemDownload::setItem(PodcastItem *item)
+{
+    _item = item;
 }

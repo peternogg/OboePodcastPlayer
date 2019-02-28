@@ -14,10 +14,16 @@ class ItemDownload : public QObject
 public:
     ItemDownload(PodcastItem* podcast, QNetworkReply* download, QObject *parent = nullptr);
 
+    PodcastItem *item() const;
+    QNetworkReply *download() const;
+
+    void setItem(PodcastItem *item);
+    void setDownload(QNetworkReply *download);
+
 signals:
     //void downloadProgress(qint64, qint64);
     void downloadError(QNetworkReply::NetworkError);
-    void downloadFinished();
+    void downloadFinished(PodcastItem*);
 
 private slots:
     void finished();
@@ -25,7 +31,7 @@ private slots:
     void downloadProgress(quint64 downloaded, qint64 total);
 
 private:
-    PodcastItem* _podcast;
+    PodcastItem* _item;
     QNetworkReply* _download;
     QFile _downloadFile;
 };

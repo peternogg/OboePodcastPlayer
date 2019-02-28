@@ -136,6 +136,7 @@ private:
         auto const metaobj = object->metaObject();
         for (int index = metaobj->propertyOffset() - 1; index < metaobj->propertyCount(); index++) {
             auto prop = metaobj->property(index);
+            qDebug() << "setting property " << prop.name();
             prop.write(object, record.value(prop.name()));
         }
     }

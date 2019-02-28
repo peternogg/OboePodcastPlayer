@@ -6,8 +6,10 @@
 #include <QMainWindow>
 #include <QMetaProperty>
 #include <QStatusBar>
+#include <QMenu>
 
 #include "SubscriptionManager.h"
+#include "EpisodeModel.h"
 #include "Repository.h"
 
 namespace Ui {
@@ -24,9 +26,13 @@ public:
 
 private:
     Ui::OboeWindow *ui;
+
     Repository _repo;
-    SubscriptionManager* _manager;
-    QMenu* _menu;
+    QNetworkAccessManager _networkManager;
+    DownloadManager _downloadManager;
+    SubscriptionManager _manager;
+
+    QMenu _menu;
     QPoint _lastSelectedPosition;
 
 private slots:
@@ -34,6 +40,7 @@ private slots:
     void addNewSubscriptionByUrl();
     void showPodcastEpisodes(const QModelIndex &index);
     void showEpisodeContextMenu(QPoint const& pos);
+    void downloadFinished(PodcastItem* download);
 };
 
 #endif // OBOEWINDOW_H

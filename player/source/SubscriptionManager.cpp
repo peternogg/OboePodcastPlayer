@@ -1,11 +1,11 @@
 #include "SubscriptionManager.h"
 
-SubscriptionManager::SubscriptionManager(Repository& repo)
-    : QAbstractTableModel(),
+SubscriptionManager::SubscriptionManager(Repository& repo, DownloadManager& downloadManager, QObject* parent)
+    : QAbstractTableModel(parent),
       _parser(),
       _subscriptions(),
       _repo(repo),
-      _downloadManager(new QNetworkAccessManager(), this)
+      _downloadManager(downloadManager)
 {}
 
 SubscriptionManager::~SubscriptionManager() {}
@@ -50,13 +50,6 @@ bool SubscriptionManager::loadSubscriptions()
     return true;
 }
 
-void SubscriptionManager::download(PodcastItem* item) {
-
-    item->setDownloadPath(_downloadManager.downloadLocation()
-                          + "/" + item->enclosureUrl().fileName());
-    _downloadManager.startDownload(item);
-}
-
 void SubscriptionManager::checkForUpdates() {
     for (size_t index = 0; index < _subscriptions.size(); index++) {
         auto* podcast = _subscriptions[index];
@@ -88,11 +81,11 @@ bool SubscriptionManager::storePodcast(Podcast* podcast) const {
     return true; // FIXME: does nothing
 }
 
-QAbstractTableModel* SubscriptionManager::episodesFor(QModelIndex const& index) const {
+QAbstractTableModel* SubscriptionManager::episodesFor(QModelIndex const& index) {
     if (index.row() >= static_cast<int>(_subscriptions.size()))
         return nullptr;
 
-    return new EpisodeModel(_subscriptions[index.row()]);
+    return new EpisodeModel(_subscriptions[index.row()], _repo, this);
 }
 
 int SubscriptionManager::rowCount(const QModelIndex &parent) const
@@ -158,70 +151,3 @@ QVariant SubscriptionManager::headerData(int section, Qt::Orientation orientatio
     return {};
 }
 
-EpisodeModel::EpisodeModel(Podcast* source)
-    : QAbstractTableModel(), _source(source)
-{}
-
-EpisodeModel::~EpisodeModel()
-{}
-
-PodcastItem* EpisodeModel::episodeFor(const QModelIndex &index) {
-    if (index.row() >= static_cast<int>(_source->items().size()))
-        return nullptr;
-
-    return _source->items()[static_cast<size_t>(index.row())];
-}
-
-int EpisodeModel::rowCount(const QModelIndex &parent) const
-{
-    if (parent.isValid())
-        return 0;
-
-    return static_cast<int>(_source->items().size());
-}
-
-int EpisodeModel::columnCount(const QModelIndex &parent) const
-{
-    if (parent.isValid())
-        return 0;
-
-    // Title, Description, Length
-    return 3;
-}
-
-QVariant EpisodeModel::data(const QModelIndex &index, int role) const
-{
-    if (role != Qt::DisplayRole)
-        return {};
-
-    switch(index.column()) {
-    case 0:
-        return _source->items().at(static_cast<size_t>(index.row()))->title();
-    case 1:
-        return _source->items().at(static_cast<size_t>(index.row()))->enclosureUrl();
-    case 2:
-        return _source->items().at(static_cast<size_t>(index.row()))->description();
-    default:
-        return {};
-    }
-}
-
-
-QVariant EpisodeModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (orientation == Qt::Vertical)
-        return {};
-
-    if (role != Qt::DisplayRole)
-        return {};
-
-    switch (section) {
-    case 0:
-        return "Title";
-    case 1:
-        return "Download URL";
-    case 2:
-        return "Description";
-    default:
-        return {};
-    }
-}

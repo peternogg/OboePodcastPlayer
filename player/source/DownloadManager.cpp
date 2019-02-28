@@ -16,6 +16,7 @@ ItemDownload* DownloadManager::startDownload(PodcastItem* item) {
     auto* const reply = _networkManager->get(request);
 
     item->setDownloadState(PodcastItem::DownloadState::Downloading);
+    item->setDownloadPath(downloadLocation() + "/" + item->enclosureUrl().fileName());
 
     _activeDownloads.emplace_back(item, reply, this);
 
@@ -29,4 +30,6 @@ QString DownloadManager::downloadLocation() const {
 void DownloadManager::finishedDownload(QNetworkReply* reply) {
     reply->deleteLater();
     qDebug() << "Finished a download.";
+
+    //_activeDownloads.remove_if([reply](ItemDownload& item) { return item.download() == reply; });
 }
