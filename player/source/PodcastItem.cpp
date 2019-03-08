@@ -114,7 +114,7 @@ void PodcastItem::setLastTimestamp(const qint64& lastTimestamp)
     _lastTimestamp = lastTimestamp;
 }
 
-PodcastItem::ListenedState PodcastItem::listenedState() const
+int PodcastItem::listenedState() const
 {
     return _listenedState;
 }
@@ -124,7 +124,7 @@ void PodcastItem::setListenedState(const ListenedState& listenedState)
     _listenedState = listenedState;
 }
 
-PodcastItem::DownloadState PodcastItem::downloadState() const
+int PodcastItem::downloadState() const
 {
     return _downloadState;
 }

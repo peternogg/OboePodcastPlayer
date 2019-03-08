@@ -19,7 +19,7 @@ void ItemDownload::finished() {
     _downloadFile.write(_download->readAll());
     _downloadFile.close();
 
-    _item->setDownloadState(PodcastItem::DownloadState::Downloaded);
+    _item->setDownloadState(DownloadState::Downloaded);
 
     emit downloadFinished(_item);
 }

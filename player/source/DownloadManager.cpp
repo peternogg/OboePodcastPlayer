@@ -15,7 +15,7 @@ ItemDownload* DownloadManager::startDownload(PodcastItem* item) {
 
     auto* const reply = _networkManager->get(request);
 
-    item->setDownloadState(PodcastItem::DownloadState::Downloading);
+    item->setDownloadState(DownloadState::Downloading);
     item->setDownloadPath(downloadLocation() + "/" + item->enclosureUrl().fileName());
 
     _activeDownloads.emplace_back(item, reply, this);

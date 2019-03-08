@@ -68,6 +68,7 @@ bool Repository::update(Persistable *object) {
     }
     for (int index = metaobj->propertyOffset(); index < metaobj->propertyCount(); index++) {
         auto const prop = metaobj->property(index);
+        qDebug() << prop.name() << " = " << prop.read(object);
         query.bindValue(QString(":%1").arg(prop.name()), prop.read(object).toString());
     }
 

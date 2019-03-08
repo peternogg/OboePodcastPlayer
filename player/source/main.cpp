@@ -7,6 +7,9 @@
 
 int main(int argc, char *argv[])
 {
+    qDebug() << "listenedState id: " << qRegisterMetaType<ListenedState>();
+    qDebug() << "downloadState id: " << qRegisterMetaType<DownloadState>();
+
     QApplication a(argc, argv);
 
     static auto const DATABASE_NAME = "oboe.db";
