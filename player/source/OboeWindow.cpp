@@ -31,7 +31,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     // Set up naviation actions
     ui->navSubscriptions->setDefaultAction(ui->goToSubscriptions);
     ui->navSearch->setDefaultAction(ui->goToSearch);
-    ui->navPlaylists->setDefaultAction(ui->goToPlaylists);
+    ui->navSummary->setDefaultAction(ui->goToSummary);
     ui->navNowPlaying->setDefaultAction(ui->goToNowPlaying);
 
     connect(ui->goToSubscriptions, &QAction::triggered, [this]() {
@@ -42,7 +42,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
        this->ui->stackedWidget->setCurrentIndex(1);
     });
 
-    connect(ui->goToPlaylists, &QAction::triggered, [this]() {
+    connect(ui->goToSummary, &QAction::triggered, [this]() {
        this->ui->stackedWidget->setCurrentIndex(3);
     });
 

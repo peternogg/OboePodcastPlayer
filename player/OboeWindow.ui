@@ -173,9 +173,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="navPlaylists">
+        <widget class="QToolButton" name="navSummary">
          <property name="text">
-          <string>Playlists</string>
+          <string>Summary</string>
          </property>
         </widget>
        </item>
@@ -285,12 +285,12 @@
     <string>Go to the search page</string>
    </property>
   </action>
-  <action name="goToPlaylists">
+  <action name="goToSummary">
    <property name="text">
-    <string>Go To Playlists</string>
+    <string>Go To Summary</string>
    </property>
    <property name="toolTip">
-    <string>Go to the playlists information page</string>
+    <string>Go to the summary screen</string>
    </property>
   </action>
   <action name="goToNowPlaying">
