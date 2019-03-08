@@ -9,8 +9,6 @@ PodcastItem::PodcastItem(QObject* parent)
       _enclosureUrl{},
       _enclosureType{},
       _downloadPath{},
-      _listenedState{ListenedState::Unheard},
-      _downloadState{DownloadState::NotDownloaded},
       _parentPodcast{0}
 { }
 
@@ -23,8 +21,6 @@ PodcastItem::PodcastItem(feedpp::item const& data, QObject *parent)
       _enclosureUrl{QString::fromStdString(data.enclosure_url)},
       _enclosureType{QString::fromStdString(data.enclosure_type)},
       _downloadPath{},
-      _listenedState{ListenedState::Unheard},
-      _downloadState{DownloadState::NotDownloaded},
       _parentPodcast{0}
 { }
 
@@ -114,24 +110,19 @@ void PodcastItem::setLastTimestamp(const qint64& lastTimestamp)
     _lastTimestamp = lastTimestamp;
 }
 
-int PodcastItem::listenedState() const
+PodcastItem::ListenedState PodcastItem::listenedState() const
 {
-    return _listenedState;
+    if (_lastTimestamp == 0)
+        return Unheard;
+    else if (_lastTimestamp == -1)
+        return Finished;
+    else
+        return InProgress;
 }
 
-void PodcastItem::setListenedState(const ListenedState& listenedState)
+PodcastItem::DownloadState PodcastItem::downloadState() const
 {
-    _listenedState = listenedState;
-}
-
-int PodcastItem::downloadState() const
-{
-    return _downloadState;
-}
-
-void PodcastItem::setDownloadState(const DownloadState& downloadState)
-{
-    _downloadState = downloadState;
+    return _downloadPath.isEmpty() ? NotDownloaded : Downloaded;
 }
 
 qint64 PodcastItem::parentPodcast() const

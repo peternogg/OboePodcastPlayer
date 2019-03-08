@@ -8,16 +8,13 @@
 #include "Persistable.h"
 #include "feedpp.h"
 
-enum ListenedState { Unheard, InProgress, Finished };
-enum DownloadState { NotDownloaded, Downloading, Downloaded };
-
-Q_DECLARE_METATYPE(ListenedState)
-Q_DECLARE_METATYPE(DownloadState)
-
 class PodcastItem : public Persistable
 {
     Q_OBJECT
 public:
+    enum DownloadState { NotDownloaded, Downloading, Downloaded };
+    enum ListenedState { Unheard, InProgress, Finished };
+
     PodcastItem(QObject* parent = nullptr);
     PodcastItem(feedpp::item const& item, QObject *parent = nullptr);
     virtual ~PodcastItem() override;
@@ -30,8 +27,6 @@ public:
     Q_PROPERTY(QString enclosureType READ enclosureType WRITE setEnclosureType)
     Q_PROPERTY(QString downloadPath READ downloadPath WRITE setDownloadPath)
     Q_PROPERTY(qint64 lastTimestamp READ lastTimestamp WRITE setLastTimestamp)
-    Q_PROPERTY(int listenedState READ listenedState WRITE setListenedState)
-    Q_PROPERTY(int downloadState READ downloadState WRITE setDownloadState)
     Q_PROPERTY(qint64 parentPodcast READ parentPodcast WRITE setParentPodcast)
 
     QString title() const;
@@ -42,8 +37,8 @@ public:
     QString enclosureType() const;
     QString downloadPath() const;
     qint64 lastTimestamp() const;
-    int listenedState() const;
-    int downloadState() const;
+    ListenedState listenedState() const;
+    DownloadState downloadState() const;
     qint64 parentPodcast() const;
 
     void setTitle(const QString& title);
@@ -54,8 +49,6 @@ public:
     void setEnclosureType(const QString& enclosureType);
     void setDownloadPath(const QString& downloadPath);
     void setLastTimestamp(const qint64& lastTimestamp);
-    void setListenedState(const int listenedState);
-    void setDownloadState(const int downloadState);
     void setParentPodcast(const qint64 &parentPodcast);
 
     bool isDifferentFrom(PodcastItem const& other);
@@ -71,8 +64,6 @@ private:
     QString _enclosureType;
     QString _downloadPath;
     qint64 _lastTimestamp;
-    int _listenedState;
-    int _downloadState;
     qint64 _parentPodcast;
 };
 

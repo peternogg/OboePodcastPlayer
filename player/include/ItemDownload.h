@@ -12,7 +12,7 @@ class ItemDownload : public QObject
 {
     Q_OBJECT
 public:
-    ItemDownload(PodcastItem* podcast, QNetworkReply* download, QObject *parent = nullptr);
+    ItemDownload(PodcastItem* podcast, QNetworkReply* download, QString destination, QObject *parent = nullptr);
 
     PodcastItem *item() const;
     QNetworkReply *download() const;

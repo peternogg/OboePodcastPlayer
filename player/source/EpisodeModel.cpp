@@ -59,9 +59,9 @@ QVariant EpisodeModel::data(const QModelIndex &index, int role) const
     } else if (role == Qt::FontRole) {
         auto* item = _source->items().at(static_cast<size_t>(index.row()));
         QFont font;
-        if (item->downloadState() == DownloadState::Downloading) {
+        if (item->downloadState() == PodcastItem::Downloading) {
             font.setItalic(true);
-        } else if (item->downloadState() == DownloadState::Downloaded) {
+        } else if (item->downloadState() == PodcastItem::Downloaded) {
             font.setBold(true);
         }
 
@@ -94,7 +94,6 @@ QVariant EpisodeModel::headerData(int section, Qt::Orientation orientation, int 
 }
 
 void EpisodeModel::downloadFinished(PodcastItem *item) {
-    item->setDownloadState(DownloadState::Downloaded);
     _repo.store(item);
 
     auto iter = std::find(_source->items().begin(), _source->items().end(), item);

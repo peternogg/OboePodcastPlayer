@@ -19,7 +19,5 @@ create table PodcastItem (
     enclosureUrl    text, -- A link to an audio file
     enclosureType   text, -- MIME type of enclosure
     downloadPath    text, -- The path for the downloaded file
-    lastTimestamp   integer,
-    listenedState   text,
-    downloadState   text
+    lastTimestamp   integer
 );

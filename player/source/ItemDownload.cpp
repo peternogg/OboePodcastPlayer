@@ -1,7 +1,7 @@
 #include "ItemDownload.h"
 
-ItemDownload::ItemDownload(PodcastItem* podcast, QNetworkReply* download, QObject *parent)
-    : QObject(parent), _item(podcast), _download(download), _downloadFile(podcast->downloadPath())
+ItemDownload::ItemDownload(PodcastItem* podcast, QNetworkReply* download, QString destination, QObject *parent)
+    : QObject(parent), _item(podcast), _download(download), _downloadFile(destination)
 {
     qDebug() << podcast->downloadPath();
     if (!_downloadFile.open(QFile::WriteOnly)) {
@@ -19,7 +19,7 @@ void ItemDownload::finished() {
     _downloadFile.write(_download->readAll());
     _downloadFile.close();
 
-    _item->setDownloadState(DownloadState::Downloaded);
+    _item->setDownloadPath(_downloadFile.fileName());
 
     emit downloadFinished(_item);
 }
