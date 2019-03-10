@@ -58,6 +58,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::addNewSubscriptionByUrl);
     connect(ui->actionUpdate_subscriptions, &QAction::triggered, &_manager, &SubscriptionManager::checkForUpdates);
     connect(ui->subscriptionsList, &QTableView::doubleClicked, this, &OboeWindow::showPodcastEpisodes);
+    connect(ui->episodeView, &QTableView::doubleClicked, this, &OboeWindow::playEpisode);
     connect(ui->episodeView, &QTableView::customContextMenuRequested, this, &OboeWindow::showEpisodeContextMenu);
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
@@ -102,4 +103,12 @@ void OboeWindow::showEpisodeContextMenu(QPoint const& pos) {
 void OboeWindow::downloadFinished(PodcastItem* item) {
     _repo.store(item);
 
+}
+
+void OboeWindow::playEpisode(const QModelIndex& index) {
+    auto* const model = static_cast<EpisodeModel*>(ui->episodeView->model());
+    auto* podcast = model->episodeFor(index);
+
+    _queue.addEpisode(podcast);
+    _queue.playNext();
 }

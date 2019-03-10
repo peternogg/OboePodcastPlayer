@@ -326,6 +326,16 @@
     <string>Delete downloaded episode</string>
    </property>
   </action>
+  <action name="playPodcastEpisode">
+   <property name="text">
+    <string>Play a podcast episode</string>
+   </property>
+  </action>
+  <action name="queuePodcastEpisode">
+   <property name="text">
+    <string>Queue a podcast episode</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

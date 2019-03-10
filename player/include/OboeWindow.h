@@ -11,6 +11,7 @@
 #include "SubscriptionManager.h"
 #include "EpisodeModel.h"
 #include "Repository.h"
+#include "PlaybackQueue.h"
 
 namespace Ui {
 class OboeWindow;
@@ -31,6 +32,7 @@ private:
     QNetworkAccessManager _networkManager;
     DownloadManager _downloadManager;
     SubscriptionManager _manager;
+    PlaybackQueue _queue;
 
     QMenu _menu;
     QPoint _lastSelectedPosition;
@@ -41,6 +43,7 @@ private slots:
     void showPodcastEpisodes(const QModelIndex &index);
     void showEpisodeContextMenu(QPoint const& pos);
     void downloadFinished(PodcastItem* download);
+    void playEpisode(const QModelIndex& index);
 };
 
 #endif // OBOEWINDOW_H

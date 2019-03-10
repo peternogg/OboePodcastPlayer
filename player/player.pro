@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network
+QT       += core gui sql network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -47,7 +47,8 @@ SOURCES += source/main.cpp \
     source/Repository.cpp \
     source/DownloadManager.cpp \
     source/ItemDownload.cpp \
-    source/EpisodeModel.cpp
+    source/EpisodeModel.cpp \
+    source/PlaybackQueue.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
@@ -67,7 +68,8 @@ HEADERS += include/OboeWindow.h \
     include/Repository.h \
     include/DownloadManager.h \
     include/ItemDownload.h \
-    include/EpisodeModel.h
+    include/EpisodeModel.h \
+    include/PlaybackQueue.h
 
 FORMS += \
         OboeWindow.ui
