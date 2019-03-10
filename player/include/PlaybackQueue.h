@@ -32,6 +32,8 @@ public slots:
     void playNext();
     /// Pauses/plays the currently playing episode.
     void togglePlayback();
+    /// Update the position in playback
+    void setPosition(qint64 newPosition);
 
 private slots:
     void updateEpisodePlayback(qint64 position);

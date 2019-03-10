@@ -75,6 +75,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(&_queue, &PlaybackQueue::episodeChanged, this, &OboeWindow::playbackEpisodeChanged);
     connect(&_queue, &PlaybackQueue::positionChanged, this, &OboeWindow::playbackPositionChanged);
     connect(&_queue, &PlaybackQueue::durationChanged, this, &OboeWindow::playbackDurationChanged);
+    connect(ui->timeline, &QSlider::sliderMoved, &_queue, &PlaybackQueue::setPosition);
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
@@ -151,6 +152,7 @@ static QString msToTimestamp(qint64 msecs) {
 
 void OboeWindow::playbackPositionChanged(qint64 position) {
     ui->currentEpisodePosition->setText(msToTimestamp(position));
+    ui->timeline->setValue(static_cast<int>(position));
 }
 
 void OboeWindow::playbackEpisodeChanged(PodcastItem const* episode) {
@@ -158,11 +160,11 @@ void OboeWindow::playbackEpisodeChanged(PodcastItem const* episode) {
         ui->currentEpisodeLength->setText("-");
         ui->currentEpisodePosition->setText("-");
     } else {
-        ui->currentEpisodeLength->setText(QString("%1").arg(_queue.currentEpisodeLength()));
-        ui->currentEpisodePosition->setText(QString("%1").arg(episode->lastTimestamp()));
+        ui->currentEpisodePosition->setText(msToTimestamp(episode->lastTimestamp()));
     }
 }
 
 void OboeWindow::playbackDurationChanged(qint64 duration) {
     ui->currentEpisodeLength->setText(msToTimestamp(duration));
+    ui->timeline->setMaximum(static_cast<int>(duration));
 }

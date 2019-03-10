@@ -53,3 +53,7 @@ void PlaybackQueue::togglePlayback() {
     else
         _player.play();
 }
+
+void PlaybackQueue::setPosition(qint64 newPosition) {
+    _player.setPosition(newPosition);
+}
