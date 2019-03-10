@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QInputDialog>
+#include <QMessageBox>
 #include <QMainWindow>
 #include <QMetaProperty>
 #include <QStatusBar>

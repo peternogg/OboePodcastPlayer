@@ -34,6 +34,12 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->navSummary->setDefaultAction(ui->goToSummary);
     ui->navNowPlaying->setDefaultAction(ui->goToNowPlaying);
 
+    ui->pausePlay->setDefaultAction(ui->togglePausePlay);
+    ui->jumpBack->setDefaultAction(ui->jumpBackwards);
+    ui->jumpForward->setDefaultAction(ui->jumpForwards);
+    ui->skipCurrent->setDefaultAction(ui->playNext);
+    ui->searchStart->setDefaultAction(ui->performSearch);
+
     connect(ui->goToSubscriptions, &QAction::triggered, [this]() {
        this->ui->stackedWidget->setCurrentIndex(0);
     });
@@ -60,6 +66,11 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->subscriptionsList, &QTableView::doubleClicked, this, &OboeWindow::showPodcastEpisodes);
     connect(ui->episodeView, &QTableView::doubleClicked, this, &OboeWindow::playEpisode);
     connect(ui->episodeView, &QTableView::customContextMenuRequested, this, &OboeWindow::showEpisodeContextMenu);
+
+    connect(ui->togglePausePlay, &QAction::triggered, &_queue, &PlaybackQueue::togglePlayback);
+    connect(ui->togglePausePlay, &QAction::triggered, this, [this]() {
+        ui->togglePausePlay->setIcon(QIcon::fromTheme(_queue.isPlaying() ? ":/icons/pause.png" : ":/icons/play.png"));
+    });
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
@@ -109,6 +120,12 @@ void OboeWindow::playEpisode(const QModelIndex& index) {
     auto* const model = static_cast<EpisodeModel*>(ui->episodeView->model());
     auto* podcast = model->episodeFor(index);
 
+    if (podcast->downloadState() != PodcastItem::Downloaded) {
+        QMessageBox::warning(this, "Can't play that episode", "You must download that episode before you play it.");
+        return;
+    }
+
     _queue.addEpisode(podcast);
     _queue.playNext();
+    ui->togglePausePlay->setIcon(QIcon::fromTheme(":/icons/pause.png"));
 }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>OboeWindow</string>
+   <string>Oboe Podcast Manager</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -160,8 +160,20 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QToolButton" name="navSubscriptions">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Subscriptions</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -170,6 +182,12 @@
          <property name="text">
           <string>Search</string>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
@@ -177,12 +195,24 @@
          <property name="text">
           <string>Summary</string>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QToolButton" name="navNowPlaying">
          <property name="text">
           <string>Now Playing</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -216,12 +246,24 @@
          <property name="text">
           <string>...</string>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QToolButton" name="pausePlay">
          <property name="text">
           <string>...</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -230,12 +272,24 @@
          <property name="text">
           <string>...</string>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QToolButton" name="skipCurrent">
          <property name="text">
           <string>...</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -270,6 +324,11 @@
    <addaction name="menuSubscriptions"/>
   </widget>
   <action name="goToSubscriptions">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/subscriptions.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Go To Subscriptions Page</string>
    </property>
@@ -278,6 +337,10 @@
    </property>
   </action>
   <action name="goToSearch">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
+   </property>
    <property name="text">
     <string>Go To Search</string>
    </property>
@@ -286,6 +349,11 @@
    </property>
   </action>
   <action name="goToSummary">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/summary.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Go To Summary</string>
    </property>
@@ -294,6 +362,11 @@
    </property>
   </action>
   <action name="goToNowPlaying">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/queue.png</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Go To Now Playing</string>
    </property>
@@ -336,9 +409,59 @@
     <string>Queue a podcast episode</string>
    </property>
   </action>
+  <action name="togglePausePlay">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/play.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Pause/Play the current episode</string>
+   </property>
+  </action>
+  <action name="playNext">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next in queue</string>
+   </property>
+  </action>
+  <action name="jumpBackwards">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/backward.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Jump backwards in the current episode</string>
+   </property>
+  </action>
+  <action name="jumpForwards">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/forward.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Jump forwards in the current episode</string>
+   </property>
+  </action>
+  <action name="performSearch">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Perform the online search</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
  <slots>
   <slot>showPodcastEpisodes(QModelIndex)</slot>

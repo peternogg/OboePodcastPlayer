@@ -1,5 +1,14 @@
 <RCC>
     <qresource prefix="/">
         <file>database/schema.sql</file>
+        <file>icons/summary.png</file>
+        <file>icons/subscriptions.png</file>
+        <file>icons/search.png</file>
+        <file>icons/queue.png</file>
+        <file>icons/play.png</file>
+        <file>icons/pause.png</file>
+        <file>icons/next.png</file>
+        <file>icons/forward.png</file>
+        <file>icons/backward.png</file>
     </qresource>
 </RCC>
