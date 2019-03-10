@@ -16,11 +16,21 @@ public:
     void addEpisode(PodcastItem* item);
     bool isPlaying() const;
 
+    qint64 currentEpisodeLength() const;
+
 signals:
+    /// Emitted occasionally to update the position of the current episode
     void positionChanged(qint64 position);
+    /// Emitted when the duration of the playing episode changes
+    void durationChanged(qint64 duration);
+    /// Emitted when the episode currently playing changes.
+    /// item is null if the player reaches the end and stops.
+    void episodeChanged(PodcastItem* item);
 
 public slots:
+    /// Skip forwards to the next track. Stops playing if the queue is empty
     void playNext();
+    /// Pauses/plays the currently playing episode.
     void togglePlayback();
 
 private slots:

@@ -71,6 +71,10 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->togglePausePlay, &QAction::triggered, this, [this]() {
         ui->togglePausePlay->setIcon(QIcon::fromTheme(_queue.isPlaying() ? ":/icons/pause.png" : ":/icons/play.png"));
     });
+
+    connect(&_queue, &PlaybackQueue::episodeChanged, this, &OboeWindow::playbackEpisodeChanged);
+    connect(&_queue, &PlaybackQueue::positionChanged, this, &OboeWindow::playbackPositionChanged);
+    connect(&_queue, &PlaybackQueue::durationChanged, this, &OboeWindow::playbackDurationChanged);
     //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
@@ -128,4 +132,37 @@ void OboeWindow::playEpisode(const QModelIndex& index) {
     _queue.addEpisode(podcast);
     _queue.playNext();
     ui->togglePausePlay->setIcon(QIcon::fromTheme(":/icons/pause.png"));
+}
+
+static QString msToTimestamp(qint64 msecs) {
+    qint64 hours = msecs / (60 * 60 * 1000);
+    msecs %= 60 * 60 * 1000;
+
+    qint64 minutes = msecs / (60 * 1000);
+    msecs %= 60 * 1000;
+
+    qint64 seconds = msecs / 1000;
+
+    return QString("%1:%2:%3")
+            .arg(hours, 2, 10, QChar('0'))
+            .arg(minutes, 2, 10, QChar('0'))
+            .arg(seconds, 2, 10, QChar('0'));
+}
+
+void OboeWindow::playbackPositionChanged(qint64 position) {
+    ui->currentEpisodePosition->setText(msToTimestamp(position));
+}
+
+void OboeWindow::playbackEpisodeChanged(PodcastItem const* episode) {
+    if (episode == nullptr) {
+        ui->currentEpisodeLength->setText("-");
+        ui->currentEpisodePosition->setText("-");
+    } else {
+        ui->currentEpisodeLength->setText(QString("%1").arg(_queue.currentEpisodeLength()));
+        ui->currentEpisodePosition->setText(QString("%1").arg(episode->lastTimestamp()));
+    }
+}
+
+void OboeWindow::playbackDurationChanged(qint64 duration) {
+    ui->currentEpisodeLength->setText(msToTimestamp(duration));
 }

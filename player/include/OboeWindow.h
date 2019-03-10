@@ -45,6 +45,9 @@ private slots:
     void showEpisodeContextMenu(QPoint const& pos);
     void downloadFinished(PodcastItem* download);
     void playEpisode(const QModelIndex& index);
+    void playbackPositionChanged(qint64 position);
+    void playbackEpisodeChanged(PodcastItem const* episode);
+    void playbackDurationChanged(qint64 duration);
 };
 
 #endif // OBOEWINDOW_H
