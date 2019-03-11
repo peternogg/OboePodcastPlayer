@@ -69,7 +69,8 @@ HEADERS += include/OboeWindow.h \
     include/DownloadManager.h \
     include/ItemDownload.h \
     include/EpisodeModel.h \
-    include/PlaybackQueue.h
+    include/PlaybackQueue.h \
+    include/util.h
 
 FORMS += \
         OboeWindow.ui

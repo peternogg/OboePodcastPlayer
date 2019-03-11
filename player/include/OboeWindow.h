@@ -13,6 +13,7 @@
 #include "EpisodeModel.h"
 #include "Repository.h"
 #include "PlaybackQueue.h"
+#include "util.h"
 
 namespace Ui {
 class OboeWindow;

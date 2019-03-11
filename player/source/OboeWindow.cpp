@@ -8,6 +8,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _networkManager(this),
     _downloadManager(&_networkManager, this),
     _manager(_repo, _downloadManager, this),
+    _queue(),
     _menu(this),
     _lastSelectedPosition()
 {
@@ -24,6 +25,10 @@ OboeWindow::OboeWindow(QWidget *parent) :
     //ui->episodeView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->episodeView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->episodeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    ui->queueList->setModel(&_queue);
+    ui->queueList->horizontalHeader()->setStretchLastSection(true);
+    ui->queueList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
     _menu.addAction(ui->downloadEpisode);
     _menu.addAction(ui->deleteDownloadedEpisode);
@@ -133,21 +138,6 @@ void OboeWindow::playEpisode(const QModelIndex& index) {
     _queue.addEpisode(podcast);
     _queue.playNext();
     ui->togglePausePlay->setIcon(QIcon::fromTheme(":/icons/pause.png"));
-}
-
-static QString msToTimestamp(qint64 msecs) {
-    qint64 hours = msecs / (60 * 60 * 1000);
-    msecs %= 60 * 60 * 1000;
-
-    qint64 minutes = msecs / (60 * 1000);
-    msecs %= 60 * 1000;
-
-    qint64 seconds = msecs / 1000;
-
-    return QString("%1:%2:%3")
-            .arg(hours, 2, 10, QChar('0'))
-            .arg(minutes, 2, 10, QChar('0'))
-            .arg(seconds, 2, 10, QChar('0'));
 }
 
 void OboeWindow::playbackPositionChanged(qint64 position) {

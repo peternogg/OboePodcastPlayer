@@ -4,10 +4,12 @@
 #include <deque>
 #include <QObject>
 #include <QMediaPlayer>
+#include <QAbstractTableModel>
 
 #include "PodcastItem.h"
+#include "util.h"
 
-class PlaybackQueue : public QObject
+class PlaybackQueue : public QAbstractTableModel
 {
     Q_OBJECT
 public:
@@ -43,6 +45,13 @@ private:
     // The currently playing item is at _queue.front()
     std::deque<PodcastItem*> _queue;
     QMediaPlayer _player;
+
+    // QAbstractItemModel interface
+public:
+    virtual int rowCount(const QModelIndex &parent) const override;
+    virtual int columnCount(const QModelIndex &parent) const override;
+    virtual QVariant data(const QModelIndex &index, int role) const override;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 };
 
 #endif // PLAYBACKQUEUE_H
