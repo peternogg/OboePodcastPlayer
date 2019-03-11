@@ -36,6 +36,8 @@ private:
     SubscriptionManager _manager;
     PlaybackQueue _queue;
 
+    EpisodeModel* _currentEpisodeModel;
+
     QMenu _menu;
     QPoint _lastSelectedPosition;
 

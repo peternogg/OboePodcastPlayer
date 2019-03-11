@@ -10,7 +10,17 @@ PlaybackQueue::PlaybackQueue(QObject *parent)
     _player.setNotifyInterval(100);
 }
 
-void PlaybackQueue::addEpisode(PodcastItem *item) {
+void PlaybackQueue::prependEpisode(PodcastItem *item)
+{
+    beginInsertRows(QModelIndex(), 1, 1);
+
+    // Put the new episode one spot behind the front
+    _queue.insert(_queue.begin() + 1, item);
+
+    endInsertRows();
+}
+
+void PlaybackQueue::appendEpisode(PodcastItem *item) {
     auto const size = static_cast<int>(_queue.size());
     beginInsertRows(QModelIndex(), size, size);
 

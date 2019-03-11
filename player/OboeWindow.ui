@@ -497,6 +497,16 @@
     <string>Perform the online search</string>
    </property>
   </action>
+  <action name="appendToQueue">
+   <property name="text">
+    <string>Add to queue</string>
+   </property>
+  </action>
+  <action name="prependToQueue">
+   <property name="text">
+    <string>Play next</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

@@ -15,7 +15,8 @@ class PlaybackQueue : public QAbstractTableModel
 public:
     explicit PlaybackQueue(QObject *parent = nullptr);
 
-    void addEpisode(PodcastItem* item);
+    void prependEpisode(PodcastItem* item);
+    void appendEpisode(PodcastItem* item);
     bool isPlaying() const;
 
     qint64 currentEpisodeLength() const;

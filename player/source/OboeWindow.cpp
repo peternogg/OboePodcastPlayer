@@ -9,6 +9,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _downloadManager(&_networkManager, this),
     _manager(_repo, _downloadManager, this),
     _queue(),
+    _currentEpisodeModel(nullptr),
     _menu(this),
     _lastSelectedPosition()
 {
@@ -30,6 +31,8 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->queueList->horizontalHeader()->setStretchLastSection(true);
     ui->queueList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
+    _menu.addAction(ui->appendToQueue);
+    _menu.addAction(ui->prependToQueue);
     _menu.addAction(ui->downloadEpisode);
     _menu.addAction(ui->deleteDownloadedEpisode);
 
@@ -73,8 +76,28 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->episodeView, &QTableView::customContextMenuRequested, this, &OboeWindow::showEpisodeContextMenu);
 
     connect(ui->togglePausePlay, &QAction::triggered, &_queue, &PlaybackQueue::togglePlayback);
-    connect(ui->togglePausePlay, &QAction::triggered, this, [this]() {
+    connect(ui->togglePausePlay, &QAction::triggered, [this]() {
         ui->togglePausePlay->setIcon(QIcon::fromTheme(_queue.isPlaying() ? ":/icons/pause.png" : ":/icons/play.png"));
+    });
+
+    connect(ui->appendToQueue, &QAction::triggered, [this]() {
+        if (_currentEpisodeModel == nullptr)
+            return;
+
+        auto const selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
+        auto* const episode = _currentEpisodeModel->episodeFor(selectedItem);
+
+        _queue.appendEpisode(episode);
+    });
+
+    connect(ui->prependToQueue, &QAction::triggered, [this]() {
+        if (_currentEpisodeModel == nullptr)
+            return;
+
+        auto const selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
+        auto* const episode = _currentEpisodeModel->episodeFor(selectedItem);
+
+        _queue.prependEpisode(episode);
     });
 
     connect(&_queue, &PlaybackQueue::episodeChanged, this, &OboeWindow::playbackEpisodeChanged);
@@ -91,8 +114,7 @@ OboeWindow::~OboeWindow()
 
 void OboeWindow::episodeDownloadRequested() {
     QModelIndex selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
-    auto* const model = static_cast<EpisodeModel*>(ui->episodeView->model());
-    auto* const episode = model->episodeFor(selectedItem);
+    auto* const episode = _currentEpisodeModel->episodeFor(selectedItem);
 
     if (episode == nullptr) {
         statusBar()->showMessage("Error: Failed to download podcast.");
@@ -100,7 +122,7 @@ void OboeWindow::episodeDownloadRequested() {
     }
 
     auto* downloadRecord = _downloadManager.startDownload(episode);
-    model->downloadStartedFor(selectedItem, downloadRecord);
+    _currentEpisodeModel->downloadStartedFor(selectedItem, downloadRecord);
 }
 
 void OboeWindow::addNewSubscriptionByUrl() {
@@ -108,10 +130,9 @@ void OboeWindow::addNewSubscriptionByUrl() {
     _manager.subscribeTo(string);
 }
 
-void OboeWindow::showPodcastEpisodes(const QModelIndex &index)
-{
-    auto* model = _manager.episodesFor(index);
-    ui->episodeView->setModel(model);
+void OboeWindow::showPodcastEpisodes(const QModelIndex &index) {
+    _currentEpisodeModel = dynamic_cast<EpisodeModel*>(_manager.episodesFor(index));
+    ui->episodeView->setModel(_currentEpisodeModel);
 
     ui->goToEpisodeView->trigger();
 }
@@ -127,15 +148,17 @@ void OboeWindow::downloadFinished(PodcastItem* item) {
 }
 
 void OboeWindow::playEpisode(const QModelIndex& index) {
-    auto* const model = static_cast<EpisodeModel*>(ui->episodeView->model());
-    auto* podcast = model->episodeFor(index);
+    if (_currentEpisodeModel == nullptr)
+        return;
+
+    auto* podcast = _currentEpisodeModel->episodeFor(index);
 
     if (podcast->downloadState() != PodcastItem::Downloaded) {
         QMessageBox::warning(this, "Can't play that episode", "You must download that episode before you play it.");
         return;
     }
 
-    _queue.addEpisode(podcast);
+    _queue.prependEpisode(podcast);
     _queue.playNext();
     ui->togglePausePlay->setIcon(QIcon::fromTheme(":/icons/pause.png"));
 }
