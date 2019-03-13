@@ -7,17 +7,17 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _repo(),
     _networkManager(this),
     _downloadManager(&_networkManager, this),
-    _manager(_repo, _downloadManager, this),
+    _subscriptionManager(_repo, _downloadManager, this),
     _queue(),
     _currentEpisodeModel(nullptr),
-    _menu(this),
+    _episodeContextMenu(this),
     _lastSelectedPosition()
 {
-    _manager.loadSubscriptions();
+    _subscriptionManager.loadSubscriptions();
 
     ui->setupUi(this);
 
-    ui->subscriptionsList->setModel(&_manager);
+    ui->subscriptionsList->setModel(&_subscriptionManager);
     ui->subscriptionsList->horizontalHeader()->setStretchLastSection(true);
     ui->subscriptionsList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
@@ -30,10 +30,14 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->queueList->horizontalHeader()->setStretchLastSection(true);
     ui->queueList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
-    _menu.addAction(ui->appendToQueue);
-    _menu.addAction(ui->prependToQueue);
-    _menu.addAction(ui->downloadEpisode);
-    _menu.addAction(ui->deleteDownloadedEpisode);
+    _episodeContextMenu.addAction(ui->appendToQueue);
+    _episodeContextMenu.addAction(ui->prependToQueue);
+    _episodeContextMenu.addSeparator();
+    _episodeContextMenu.addAction(ui->downloadEpisode);
+    _episodeContextMenu.addAction(ui->deleteDownloadedEpisode);
+    _episodeContextMenu.addSeparator();
+    _episodeContextMenu.addAction(ui->markEpisodeUnheard);
+    _episodeContextMenu.addAction(ui->markEpisodeListenedTo);
 
     // Set up naviation actions
     ui->navSubscriptions->setDefaultAction(ui->goToSubscriptions);
@@ -69,7 +73,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
 
     connect(ui->downloadEpisode, &QAction::triggered, this, &OboeWindow::episodeDownloadRequested);
     connect(ui->actionAdd_URL, &QAction::triggered, this, &OboeWindow::addNewSubscriptionByUrl);
-    connect(ui->actionUpdate_subscriptions, &QAction::triggered, &_manager, &SubscriptionManager::checkForUpdates);
+    connect(ui->actionUpdate_subscriptions, &QAction::triggered, &_subscriptionManager, &SubscriptionManager::checkForUpdates);
     connect(ui->subscriptionsList, &QTableView::doubleClicked, this, &OboeWindow::showPodcastEpisodes);
     connect(ui->episodeView, &QTableView::doubleClicked, this, &OboeWindow::playEpisode);
     connect(ui->episodeView, &QTableView::customContextMenuRequested, this, &OboeWindow::showEpisodeContextMenu);
@@ -77,6 +81,14 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->togglePausePlay, &QAction::triggered, &_queue, &PlaybackQueue::togglePlayback);
     connect(ui->togglePausePlay, &QAction::triggered, [this]() {
         ui->togglePausePlay->setIcon(QIcon::fromTheme(_queue.isPlaying() ? ":/icons/pause.png" : ":/icons/play.png"));
+    });
+
+    connect(ui->jumpForwards, &QAction::triggered, [this]() {
+         _queue.addTime(15 * 1000);
+    });
+
+    connect(ui->jumpBackwards, &QAction::triggered, [this]() {
+        _queue.addTime(-15 * 1000);
     });
 
     connect(ui->appendToQueue, &QAction::triggered, [this]() {
@@ -99,6 +111,22 @@ OboeWindow::OboeWindow(QWidget *parent) :
         _queue.prependEpisode(episode);
     });
 
+    connect(ui->markEpisodeUnheard, &QAction::triggered, [this]() {
+        if (_currentEpisodeModel == nullptr)
+            return;
+
+        auto const selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
+        _currentEpisodeModel->markUnheard(selectedItem);
+    });
+
+    connect(ui->markEpisodeListenedTo, &QAction::triggered, [this]() {
+        if (_currentEpisodeModel == nullptr)
+            return;
+
+        auto const selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
+        _currentEpisodeModel->markListenedTo(selectedItem);
+    });
+
     connect(ui->playNext, &QAction::triggered, &_queue, &PlaybackQueue::playNext);
     connect(&_queue, &PlaybackQueue::episodeChanged, this, &OboeWindow::playbackEpisodeChanged);
     connect(&_queue, &PlaybackQueue::positionChanged, this, &OboeWindow::playbackPositionChanged);
@@ -109,6 +137,11 @@ OboeWindow::OboeWindow(QWidget *parent) :
 OboeWindow::~OboeWindow()
 {
     delete ui;
+}
+
+void OboeWindow::closeEvent(QCloseEvent*) {
+    // Store all the podcast episodes to disk
+    _subscriptionManager.storeSubscriptions();
 }
 
 void OboeWindow::episodeDownloadRequested() {
@@ -126,11 +159,11 @@ void OboeWindow::episodeDownloadRequested() {
 
 void OboeWindow::addNewSubscriptionByUrl() {
     auto string = QInputDialog::getText(this, "Podcast RSS URL", "Please enter the URL of a podcast's RSS feed");
-    _manager.subscribeTo(string);
+    _subscriptionManager.subscribeTo(string);
 }
 
 void OboeWindow::showPodcastEpisodes(const QModelIndex &index) {
-    _currentEpisodeModel = dynamic_cast<EpisodeModel*>(_manager.episodesFor(index));
+    _currentEpisodeModel = dynamic_cast<EpisodeModel*>(_subscriptionManager.episodesFor(index));
     ui->episodeView->setModel(_currentEpisodeModel);
 
     ui->goToEpisodeView->trigger();
@@ -138,7 +171,7 @@ void OboeWindow::showPodcastEpisodes(const QModelIndex &index) {
 
 void OboeWindow::showEpisodeContextMenu(QPoint const& pos) {
     _lastSelectedPosition = pos;
-    _menu.exec(ui->episodeView->viewport()->mapToGlobal(pos));
+    _episodeContextMenu.exec(ui->episodeView->viewport()->mapToGlobal(pos));
 }
 
 void OboeWindow::downloadFinished(PodcastItem* item) {
@@ -170,6 +203,8 @@ void OboeWindow::playbackEpisodeChanged(PodcastItem const* episode) {
     if (episode == nullptr) {
         ui->currentEpisodeLength->setText("-");
         ui->currentEpisodePosition->setText("-");
+        ui->timeline->setValue(0);
+        ui->timeline->setMaximum(1); // Nothing values
     } else {
         ui->currentEpisodePosition->setText(msToTimestamp(episode->lastTimestamp()));
     }

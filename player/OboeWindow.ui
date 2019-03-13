@@ -507,6 +507,16 @@
     <string>Play next</string>
    </property>
   </action>
+  <action name="markEpisodeUnheard">
+   <property name="text">
+    <string>Mark as unheard</string>
+   </property>
+  </action>
+  <action name="markEpisodeListenedTo">
+   <property name="text">
+    <string>Mark as listened to</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

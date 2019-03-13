@@ -24,6 +24,10 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const override;
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
+public slots:
+    void markUnheard(QModelIndex const& index);
+    void markListenedTo(QModelIndex const& index);
+
 private slots:
     void downloadFinished(PodcastItem* item);
 

@@ -65,6 +65,9 @@ void PlaybackQueue::playNext() {
 }
 
 void PlaybackQueue::updateEpisodePlayback(qint64 position) {
+    if (_queue.empty())
+        return;
+
     _queue.front()->setLastTimestamp(position);
     emit positionChanged(position);
 }
@@ -78,6 +81,15 @@ void PlaybackQueue::togglePlayback() {
 
 void PlaybackQueue::setPosition(qint64 newPosition) {
     _player.setPosition(newPosition);
+}
+
+void PlaybackQueue::addTime(qint64 dposition)
+{
+    auto newPosition = _player.position() + dposition;
+    if (newPosition > _player.duration())
+        playNext();
+    else
+        setPosition(newPosition);
 }
 
 

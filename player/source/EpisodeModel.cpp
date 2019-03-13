@@ -16,11 +16,11 @@ PodcastItem* EpisodeModel::episodeFor(const QModelIndex &index) {
     return _source->items()[static_cast<size_t>(index.row())];
 }
 
-void EpisodeModel::downloadStartedFor(const QModelIndex &index, ItemDownload *download) {
-    _repo.store(download->item());
-    connect(download, &ItemDownload::downloadFinished, this, &EpisodeModel::downloadFinished);
+void EpisodeModel::downloadStartedFor(const QModelIndex &, ItemDownload *) {
+//    _repo.store(download->item());
+//    connect(download, &ItemDownload::downloadFinished, this, &EpisodeModel::downloadFinished);
 
-    emit dataChanged(index, createIndex(index.row() + 1, 3), { Qt::DisplayRole, Qt::FontRole });
+//    emit dataChanged(index, createIndex(index.row() + 1, 3), { Qt::DisplayRole, Qt::FontRole });
 }
 
 int EpisodeModel::rowCount(const QModelIndex &parent) const
@@ -59,10 +59,16 @@ QVariant EpisodeModel::data(const QModelIndex &index, int role) const
     } else if (role == Qt::FontRole) {
         auto* item = _source->items().at(static_cast<size_t>(index.row()));
         QFont font;
-        if (item->downloadState() == PodcastItem::Downloading) {
-            font.setItalic(true);
-        } else if (item->downloadState() == PodcastItem::Downloaded) {
+
+        switch(item->listenedState()) {
+        case PodcastItem::Unheard:
             font.setBold(true);
+        break;
+        case PodcastItem::InProgress:
+            font.setItalic(true);
+        break;
+        default: // Do nothing to the font
+        break;
         }
 
         return font;
@@ -96,15 +102,25 @@ QVariant EpisodeModel::headerData(int section, Qt::Orientation orientation, int 
 void EpisodeModel::downloadFinished(PodcastItem *item) {
     _repo.store(item);
 
-    auto iter = std::find(_source->items().begin(), _source->items().end(), item);
+//    auto iter = std::find(_source->items().begin(), _source->items().end(), item);
 
-    if (iter == _source->items().end()) {
-        qDebug() << "downloadFinished:: find failed";
-        return;
-    }
+//    if (iter == _source->items().end()) {
+//        qDebug() << "downloadFinished:: find failed";
+//        return;
+//    }
 
-    auto topLeft = createIndex(static_cast<int>(iter - _source->items().begin()), 3);
-    auto bottomRight = createIndex(static_cast<int>(iter - _source->items().begin() + 1), 3);
+//    auto topLeft = createIndex(static_cast<int>(iter - _source->items().begin()), 3);
+//    auto bottomRight = createIndex(static_cast<int>(iter - _source->items().begin() + 1), 3);
 
-    emit dataChanged(topLeft, bottomRight, { Qt::DisplayRole, Qt::FontRole });
+    //    emit dataChanged(topLeft, bottomRight, { Qt::DisplayRole, Qt::FontRole });
+}
+
+void EpisodeModel::markUnheard(const QModelIndex& index) {
+    episodeFor(index)->setLastTimestamp(0);
+    dataChanged(index, index, { Qt::FontRole, Qt::DisplayRole });
+}
+
+void EpisodeModel::markListenedTo(const QModelIndex& index) {
+    episodeFor(index)->setLastTimestamp(-1);
+    dataChanged(index, index, { Qt::FontRole, Qt::DisplayRole });
 }

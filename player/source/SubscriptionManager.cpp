@@ -50,6 +50,14 @@ bool SubscriptionManager::loadSubscriptions()
     return true;
 }
 
+bool SubscriptionManager::storeSubscriptions() {
+    for (auto* subscription : _subscriptions) {
+        storePodcast(subscription);
+    }
+
+    return true;
+}
+
 void SubscriptionManager::checkForUpdates() {
     for (size_t index = 0; index < _subscriptions.size(); index++) {
         auto* podcast = _subscriptions[index];

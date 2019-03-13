@@ -33,13 +33,16 @@ private:
     Repository _repo;
     QNetworkAccessManager _networkManager;
     DownloadManager _downloadManager;
-    SubscriptionManager _manager;
+    SubscriptionManager _subscriptionManager;
     PlaybackQueue _queue;
 
     EpisodeModel* _currentEpisodeModel;
 
-    QMenu _menu;
+    QMenu _episodeContextMenu;
     QPoint _lastSelectedPosition;
+
+protected:
+    virtual void closeEvent(QCloseEvent*) override;
 
 private slots:
     void episodeDownloadRequested();

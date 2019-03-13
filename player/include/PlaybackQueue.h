@@ -37,6 +37,8 @@ public slots:
     void togglePlayback();
     /// Update the position in playback
     void setPosition(qint64 newPosition);
+    /// Skip forward or back some number of milliseconds
+    void addTime(qint64 dposition);
 
 private slots:
     void updateEpisodePlayback(qint64 position);

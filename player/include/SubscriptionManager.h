@@ -24,6 +24,7 @@ public:
 
     bool subscribeTo(QString const& url);
     bool loadSubscriptions();
+    bool storeSubscriptions();
 
     QAbstractTableModel* episodesFor(QModelIndex const& index);
 
