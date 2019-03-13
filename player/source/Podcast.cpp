@@ -38,7 +38,7 @@ bool Podcast::isDifferentFrom(Podcast const& other) const {
     same &= other.items().size() == _items.size();
 
     for (size_t index = 0; same && index < _items.size(); index++) {
-        same &= other.items()[index]->isDifferentFrom(_items[index]);
+        same &= !other.items()[index]->isDifferentFrom(*_items[index]);
     }
 
     return !same;

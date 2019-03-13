@@ -57,6 +57,7 @@ void SubscriptionManager::checkForUpdates() {
                                                podcast->updateLink().toString().toStdString()));
 
         if (podcast->isDifferentFrom(*updatedPodcast)) {
+            // This should be a merge of old -> new, keeping as much of the old as possible
             updatedPodcast->setUpdateLink(podcast->updateLink());
             updatedPodcast->setId(podcast->id());
             updatedPodcast->setLastUpdate(QDateTime::currentDateTime());
@@ -65,7 +66,7 @@ void SubscriptionManager::checkForUpdates() {
             delete podcast;
             _subscriptions[index] = updatedPodcast;
 
-            emit dataChanged(QModelIndex(), QModelIndex(), { Qt::DisplayRole, Qt::FontRole });
+            emit dataChanged(this->index(index, 0), this->index(index, 3), { Qt::DisplayRole, Qt::FontRole });
         }
     }
 }

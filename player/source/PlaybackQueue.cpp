@@ -14,8 +14,12 @@ void PlaybackQueue::prependEpisode(PodcastItem *item)
 {
     beginInsertRows(QModelIndex(), 1, 1);
 
-    // Put the new episode one spot behind the front
-    _queue.insert(_queue.begin() + 1, item);
+    if (_queue.empty()) {
+        _queue.push_front(item);
+    } else {
+        // Put the new episode one spot behind the front
+        _queue.insert(_queue.begin() + 1, item);
+    }
 
     endInsertRows();
 }

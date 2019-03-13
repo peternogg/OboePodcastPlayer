@@ -23,7 +23,6 @@ OboeWindow::OboeWindow(QWidget *parent) :
 
     ui->episodeView->horizontalHeader()->setStretchLastSection(true);
     ui->episodeView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
-    //ui->episodeView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->episodeView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->episodeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -100,11 +99,11 @@ OboeWindow::OboeWindow(QWidget *parent) :
         _queue.prependEpisode(episode);
     });
 
+    connect(ui->playNext, &QAction::triggered, &_queue, &PlaybackQueue::playNext);
     connect(&_queue, &PlaybackQueue::episodeChanged, this, &OboeWindow::playbackEpisodeChanged);
     connect(&_queue, &PlaybackQueue::positionChanged, this, &OboeWindow::playbackPositionChanged);
     connect(&_queue, &PlaybackQueue::durationChanged, this, &OboeWindow::playbackDurationChanged);
     connect(ui->timeline, &QSlider::sliderMoved, &_queue, &PlaybackQueue::setPosition);
-    //connect(_manager, &SubscriptionManager::new_subscription_added, this, &OboeWindow::on_new_subscription);
 }
 
 OboeWindow::~OboeWindow()
@@ -144,7 +143,6 @@ void OboeWindow::showEpisodeContextMenu(QPoint const& pos) {
 
 void OboeWindow::downloadFinished(PodcastItem* item) {
     _repo.store(item);
-
 }
 
 void OboeWindow::playEpisode(const QModelIndex& index) {
