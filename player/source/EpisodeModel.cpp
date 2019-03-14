@@ -20,7 +20,23 @@ void EpisodeModel::downloadStartedFor(const QModelIndex &, ItemDownload *) {
 //    _repo.store(download->item());
 //    connect(download, &ItemDownload::downloadFinished, this, &EpisodeModel::downloadFinished);
 
-//    emit dataChanged(index, createIndex(index.row() + 1, 3), { Qt::DisplayRole, Qt::FontRole });
+    //    emit dataChanged(index, createIndex(index.row() + 1, 3), { Qt::DisplayRole, Qt::FontRole });
+}
+
+bool EpisodeModel::deleteDownloadedEpisode(const QModelIndex& index) {
+    auto* const episode = episodeFor(index);
+
+    if (episode->downloadState() != PodcastItem::Downloaded)
+        return false;
+
+    QString file = episode->downloadPath();
+    episode->setDownloadPath("");
+
+    _repo.store(episode);
+
+    emit dataChanged(this->index(index.row(), 2), this->index(index.row(), 2), { Qt::DisplayRole });
+
+    return QFile(file).remove();
 }
 
 int EpisodeModel::rowCount(const QModelIndex &parent) const

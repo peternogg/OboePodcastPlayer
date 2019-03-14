@@ -1,12 +1,15 @@
 #ifndef OBOEWINDOW_H
 #define OBOEWINDOW_H
 
+#include <chrono>
+
 #include <QDebug>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QMainWindow>
 #include <QMetaProperty>
 #include <QStatusBar>
+#include <QTimer>
 #include <QMenu>
 
 #include "SubscriptionManager.h"
@@ -25,7 +28,7 @@ class OboeWindow : public QMainWindow
 
 public:
     explicit OboeWindow(QWidget *parent = nullptr);
-    ~OboeWindow();
+    virtual ~OboeWindow() override;
 
 private:
     Ui::OboeWindow *ui;
@@ -39,7 +42,11 @@ private:
     EpisodeModel* _currentEpisodeModel;
 
     QMenu _episodeContextMenu;
+    QMenu _podcastContextMenu;
+    QMenu _queueContextMenu;
+
     QPoint _lastSelectedPosition;
+    QTimer* _updateTimer;
 
 protected:
     virtual void closeEvent(QCloseEvent*) override;

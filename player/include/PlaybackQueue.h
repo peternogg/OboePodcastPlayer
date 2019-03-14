@@ -20,6 +20,7 @@ public:
     bool isPlaying() const;
 
     qint64 currentEpisodeLength() const;
+    PodcastItem* currentEpisode() const;
 
 signals:
     /// Emitted occasionally to update the position of the current episode

@@ -41,6 +41,13 @@ qint64 PlaybackQueue::currentEpisodeLength() const {
     return _player.duration();
 }
 
+PodcastItem* PlaybackQueue::currentEpisode() const {
+    if (_queue.empty())
+        return nullptr;
+
+    return _queue.front();
+}
+
 void PlaybackQueue::playNext() {
     if (_queue.empty())
         return;

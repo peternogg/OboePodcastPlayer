@@ -1,6 +1,8 @@
 #include "OboeWindow.h"
 #include "ui_OboeWindow.h"
 
+using namespace std::chrono;
+
 OboeWindow::OboeWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::OboeWindow),
@@ -11,7 +13,10 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _queue(),
     _currentEpisodeModel(nullptr),
     _episodeContextMenu(this),
-    _lastSelectedPosition()
+    _podcastContextMenu(this),
+    _queueContextMenu(this),
+    _lastSelectedPosition(),
+    _updateTimer(new QTimer())
 {
     _subscriptionManager.loadSubscriptions();
 
@@ -51,6 +56,11 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->skipCurrent->setDefaultAction(ui->playNext);
     ui->searchStart->setDefaultAction(ui->performSearch);
 
+    // Auto updates
+    _updateTimer->setInterval(1h);
+    _updateTimer->start();
+    connect(_updateTimer, &QTimer::timeout, &_subscriptionManager, &SubscriptionManager::checkForUpdates);
+
     connect(ui->goToSubscriptions, &QAction::triggered, [this]() {
        this->ui->stackedWidget->setCurrentIndex(0);
     });
@@ -89,6 +99,19 @@ OboeWindow::OboeWindow(QWidget *parent) :
 
     connect(ui->jumpBackwards, &QAction::triggered, [this]() {
         _queue.addTime(-15 * 1000);
+    });
+
+    connect(ui->deleteDownloadedEpisode, &QAction::triggered, [this]() {
+        if (_currentEpisodeModel == nullptr)
+            return;
+
+        auto const selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
+        auto* const episode = _currentEpisodeModel->episodeFor(selectedItem);
+
+        if (episode == _queue.currentEpisode())
+            QMessageBox::warning(this, "Failed to delete", "Can't delete an episode which is playing. Please finish playing the episode, then delete it.");
+        else
+            _currentEpisodeModel->deleteDownloadedEpisode(selectedItem);
     });
 
     connect(ui->appendToQueue, &QAction::triggered, [this]() {

@@ -22,11 +22,22 @@ public:
     SubscriptionManager(Repository& repo, DownloadManager& downloadManager, QObject* parent = nullptr);
     virtual ~SubscriptionManager() override;
 
+    /// Add a new subscription
     bool subscribeTo(QString const& url);
+    /// Unsubscribe from some podcast and remove it from the database
+    bool unsubscribeFrom(QModelIndex const& index);
+
+    /// Fetch the user's current subscriptions from disk
     bool loadSubscriptions();
+    /// Store the user's current subscriptions to disk
     bool storeSubscriptions();
 
     QAbstractTableModel* episodesFor(QModelIndex const& index);
+
+    /// Mark all episodes of a podcast as heard
+    void markAsHeard(QModelIndex const& index);
+    /// Mark all episodes of a podcast as unheard (new)
+    void markAsUnheard(QModelIndex const& index);
 
     virtual int rowCount(const QModelIndex &parent) const override;
     virtual int columnCount(const QModelIndex &parent) const override;
