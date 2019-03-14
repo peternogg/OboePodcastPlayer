@@ -49,7 +49,8 @@ SOURCES += source/main.cpp \
     source/ItemDownload.cpp \
     source/EpisodeModel.cpp \
     source/PlaybackQueue.cpp \
-    source/SettingsManager.cpp
+    source/SettingsManager.cpp \
+    source/SettingsWindow.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
@@ -72,10 +73,12 @@ HEADERS += include/OboeWindow.h \
     include/EpisodeModel.h \
     include/PlaybackQueue.h \
     include/util.h \
-    include/SettingsManager.h
+    include/SettingsManager.h \
+    include/SettingsWindow.h
 
 FORMS += \
-        OboeWindow.ui
+        OboeWindow.ui \
+    SettingsWindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

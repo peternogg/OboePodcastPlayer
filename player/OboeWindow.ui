@@ -361,6 +361,14 @@
     <addaction name="actionAdd_URL"/>
     <addaction name="actionUpdate_subscriptions"/>
    </widget>
+   <widget class="QMenu" name="menuOboe">
+    <property name="title">
+     <string>Oboe</string>
+    </property>
+    <addaction name="showSettings"/>
+    <addaction name="exitProgram"/>
+   </widget>
+   <addaction name="menuOboe"/>
    <addaction name="menuSubscriptions"/>
   </widget>
   <action name="goToSubscriptions">
@@ -515,6 +523,16 @@
   <action name="markEpisodeListenedTo">
    <property name="text">
     <string>Mark as listened to</string>
+   </property>
+  </action>
+  <action name="showSettings">
+   <property name="text">
+    <string>Settings...</string>
+   </property>
+  </action>
+  <action name="exitProgram">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>

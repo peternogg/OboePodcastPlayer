@@ -17,6 +17,7 @@
 #include "Repository.h"
 #include "PlaybackQueue.h"
 #include "SettingsManager.h"
+#include "SettingsWindow.h"
 #include "util.h"
 
 namespace Ui {
@@ -49,6 +50,7 @@ private:
 
     QPoint _lastSelectedPosition;
     QTimer* _updateTimer;
+    SettingsWindow _settingsWindow;
 
     // Settings
     int _subscriptionUpdateTime;

@@ -18,12 +18,14 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _queueContextMenu(this),
     _lastSelectedPosition(),
     _updateTimer(new QTimer()),
+    _settingsWindow(&_settingsManager, this),
     _subscriptionUpdateTime(10 * 60 * 1000),
     _jumpBackwardTime(15 * 1000),
     _jumpForwardTime(15 * 1000)
 {
     _subscriptionManager.loadSubscriptions();
     _settingsManager.loadSettings();
+    _settingsWindow.loadSettings();
 
     _subscriptionUpdateTime = _settingsManager.subscriptionUpdatePeriod() * 60 * 1000;
     _jumpBackwardTime = _settingsManager.jumpBackwardAmount();
@@ -164,6 +166,10 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(&_queue, &PlaybackQueue::positionChanged, this, &OboeWindow::playbackPositionChanged);
     connect(&_queue, &PlaybackQueue::durationChanged, this, &OboeWindow::playbackDurationChanged);
     connect(ui->timeline, &QSlider::sliderMoved, &_queue, &PlaybackQueue::setPosition);
+
+    connect(ui->showSettings, &QAction::triggered, [this]() {
+        _settingsWindow.show();
+    });
 }
 
 OboeWindow::~OboeWindow()
