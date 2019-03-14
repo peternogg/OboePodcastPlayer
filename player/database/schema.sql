@@ -21,3 +21,15 @@ create table PodcastItem (
     downloadPath    text, -- The path for the downloaded file
     lastTimestamp   integer
 );
+
+create table Settings (
+    id              integer primary key,
+    name            text unique not null,
+    value           text
+);
+
+insert into Settings (name, value) values
+    ('subscriptionUpdatePeriod', '60'),   -- 60 minutes
+    ('jumpForwardAmount', '15000'),       -- 15 seconds (in milliseconds)
+    ('jumpBackwardAmount', '15000'),      -- 15 seconds (in milliseconds)
+    ('automaticDownload', 'true');

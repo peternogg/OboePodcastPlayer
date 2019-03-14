@@ -16,6 +16,7 @@
 #include "EpisodeModel.h"
 #include "Repository.h"
 #include "PlaybackQueue.h"
+#include "SettingsManager.h"
 #include "util.h"
 
 namespace Ui {
@@ -38,6 +39,7 @@ private:
     DownloadManager _downloadManager;
     SubscriptionManager _subscriptionManager;
     PlaybackQueue _queue;
+    SettingsManager _settingsManager;
 
     EpisodeModel* _currentEpisodeModel;
 
@@ -47,6 +49,11 @@ private:
 
     QPoint _lastSelectedPosition;
     QTimer* _updateTimer;
+
+    // Settings
+    int _subscriptionUpdateTime;
+    qint64 _jumpBackwardTime;
+    qint64 _jumpForwardTime;
 
 protected:
     virtual void closeEvent(QCloseEvent*) override;

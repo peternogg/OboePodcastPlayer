@@ -81,7 +81,6 @@ void SubscriptionManager::checkForUpdates() {
 
 bool SubscriptionManager::storePodcast(Podcast* podcast) const {
     _repo.store(podcast);
-    qDebug() << "storePodcast id = " << podcast->id();
     for (auto episode : podcast->items()) {
         episode->setParentPodcast(podcast->id());
         _repo.store(episode);

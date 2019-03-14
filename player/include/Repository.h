@@ -12,6 +12,9 @@ class Repository {
 public:
     bool store(Persistable* object);
 
+    bool storeSetting(QString const& name, QVariant const& value);
+    QVariant fetchSetting(QString const& name);
+
     template <typename T>
     std::vector<T*> fetchAll() const {
         char const* const SELECT_QUERY = "SELECT * FROM %1";

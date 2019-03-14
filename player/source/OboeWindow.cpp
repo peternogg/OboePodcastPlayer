@@ -11,14 +11,23 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _downloadManager(&_networkManager, this),
     _subscriptionManager(_repo, _downloadManager, this),
     _queue(),
+    _settingsManager(&_repo),
     _currentEpisodeModel(nullptr),
     _episodeContextMenu(this),
     _podcastContextMenu(this),
     _queueContextMenu(this),
     _lastSelectedPosition(),
-    _updateTimer(new QTimer())
+    _updateTimer(new QTimer()),
+    _subscriptionUpdateTime(10 * 60 * 1000),
+    _jumpBackwardTime(15 * 1000),
+    _jumpForwardTime(15 * 1000)
 {
     _subscriptionManager.loadSubscriptions();
+    _settingsManager.loadSettings();
+
+    _subscriptionUpdateTime = _settingsManager.subscriptionUpdatePeriod() * 60 * 1000;
+    _jumpBackwardTime = _settingsManager.jumpBackwardAmount();
+    _jumpForwardTime = _settingsManager.jumpForwardAmount();
 
     ui->setupUi(this);
 
@@ -57,7 +66,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->searchStart->setDefaultAction(ui->performSearch);
 
     // Auto updates
-    _updateTimer->setInterval(1h);
+    _updateTimer->setInterval(_subscriptionUpdateTime);
     _updateTimer->start();
     connect(_updateTimer, &QTimer::timeout, &_subscriptionManager, &SubscriptionManager::checkForUpdates);
 
@@ -94,11 +103,11 @@ OboeWindow::OboeWindow(QWidget *parent) :
     });
 
     connect(ui->jumpForwards, &QAction::triggered, [this]() {
-         _queue.addTime(15 * 1000);
+         _queue.addTime(_jumpForwardTime);
     });
 
     connect(ui->jumpBackwards, &QAction::triggered, [this]() {
-        _queue.addTime(-15 * 1000);
+        _queue.addTime(-_jumpBackwardTime);
     });
 
     connect(ui->deleteDownloadedEpisode, &QAction::triggered, [this]() {
