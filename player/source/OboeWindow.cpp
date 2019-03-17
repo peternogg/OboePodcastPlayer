@@ -1,6 +1,8 @@
 #include "OboeWindow.h"
 #include "ui_OboeWindow.h"
 
+#include "api_key.h"
+
 using namespace std::chrono;
 
 OboeWindow::OboeWindow(QWidget *parent) :
@@ -12,6 +14,7 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _subscriptionManager(_repo, _downloadManager, this),
     _queue(),
     _settingsManager(&_repo),
+    _searchInterface(SEARCH_API_KEY, &_networkManager),
     _currentEpisodeModel(nullptr),
     _episodeContextMenu(this),
     _podcastContextMenu(this),
@@ -45,6 +48,10 @@ OboeWindow::OboeWindow(QWidget *parent) :
     ui->queueList->setModel(&_queue);
     ui->queueList->horizontalHeader()->setStretchLastSection(true);
     ui->queueList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+
+    ui->searchResults->setModel(&_searchInterface);
+    ui->searchResults->horizontalHeader()->setStretchLastSection(true);
+    ui->searchResults->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
 
     _episodeContextMenu.addAction(ui->appendToQueue);
     _episodeContextMenu.addAction(ui->prependToQueue);
@@ -159,6 +166,13 @@ OboeWindow::OboeWindow(QWidget *parent) :
 
         auto const selectedItem = ui->episodeView->indexAt(_lastSelectedPosition);
         _currentEpisodeModel->markListenedTo(selectedItem);
+    });
+
+    connect(ui->performSearch, &QAction::triggered, [this]() {
+        if (ui->searchEntry->text().isEmpty())
+            return;
+
+        _searchInterface.beginSearch(ui->searchEntry->text());
     });
 
     connect(ui->playNext, &QAction::triggered, &_queue, &PlaybackQueue::playNext);

@@ -50,7 +50,8 @@ SOURCES += source/main.cpp \
     source/EpisodeModel.cpp \
     source/PlaybackQueue.cpp \
     source/SettingsManager.cpp \
-    source/SettingsWindow.cpp
+    source/SettingsWindow.cpp \
+    source/SearchInterface.cpp
 
 HEADERS += include/OboeWindow.h \
 # Feedpp files
@@ -74,7 +75,9 @@ HEADERS += include/OboeWindow.h \
     include/PlaybackQueue.h \
     include/util.h \
     include/SettingsManager.h \
-    include/SettingsWindow.h
+    include/SettingsWindow.h \
+    include/SearchInterface.h \
+    include/api_key.h
 
 FORMS += \
         OboeWindow.ui \

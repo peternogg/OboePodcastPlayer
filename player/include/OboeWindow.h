@@ -18,6 +18,7 @@
 #include "PlaybackQueue.h"
 #include "SettingsManager.h"
 #include "SettingsWindow.h"
+#include "SearchInterface.h"
 #include "util.h"
 
 namespace Ui {
@@ -41,6 +42,7 @@ private:
     SubscriptionManager _subscriptionManager;
     PlaybackQueue _queue;
     SettingsManager _settingsManager;
+    SearchInterface _searchInterface;
 
     EpisodeModel* _currentEpisodeModel;
 
