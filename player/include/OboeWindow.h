@@ -65,6 +65,7 @@ protected:
 private slots:
     void episodeDownloadRequested();
     void addNewSubscriptionByUrl();
+    void addNewSubscriptionFromSearch(const QModelIndex& index);
     void showPodcastEpisodes(const QModelIndex &index);
     void showEpisodeContextMenu(QPoint const& pos);
     void downloadFinished(PodcastItem* download);

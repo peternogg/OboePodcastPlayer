@@ -5,8 +5,6 @@ DownloadManager::DownloadManager(QNetworkAccessManager* networkManager, QObject 
 {
     connect(_networkManager, &QNetworkAccessManager::finished,
             this, &DownloadManager::finishedDownload);
-
-    _networkManager->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
 }
 
 ItemDownload* DownloadManager::startDownload(PodcastItem* item) {

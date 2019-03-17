@@ -34,6 +34,8 @@ OboeWindow::OboeWindow(QWidget *parent) :
     _jumpBackwardTime = _settingsManager.jumpBackwardAmount();
     _jumpForwardTime = _settingsManager.jumpForwardAmount();
 
+    _networkManager.setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+
     ui->setupUi(this);
 
     ui->subscriptionsList->setModel(&_subscriptionManager);
@@ -168,12 +170,16 @@ OboeWindow::OboeWindow(QWidget *parent) :
         _currentEpisodeModel->markListenedTo(selectedItem);
     });
 
+    connect(ui->searchEntry, &QLineEdit::returnPressed, ui->performSearch, &QAction::trigger);
+
     connect(ui->performSearch, &QAction::triggered, [this]() {
         if (ui->searchEntry->text().isEmpty())
             return;
 
         _searchInterface.beginSearch(ui->searchEntry->text());
     });
+
+    connect(ui->searchResults, &QTableView::doubleClicked, this, &OboeWindow::addNewSubscriptionFromSearch);
 
     connect(ui->playNext, &QAction::triggered, &_queue, &PlaybackQueue::playNext);
     connect(&_queue, &PlaybackQueue::episodeChanged, this, &OboeWindow::playbackEpisodeChanged);
@@ -212,6 +218,11 @@ void OboeWindow::episodeDownloadRequested() {
 void OboeWindow::addNewSubscriptionByUrl() {
     auto string = QInputDialog::getText(this, "Podcast RSS URL", "Please enter the URL of a podcast's RSS feed");
     _subscriptionManager.subscribeTo(string);
+}
+
+void OboeWindow::addNewSubscriptionFromSearch(const QModelIndex &index) {
+    auto selectedResult = _searchInterface.results()[index.row()];
+    _subscriptionManager.subscribeTo(selectedResult.getUrl());
 }
 
 void OboeWindow::showPodcastEpisodes(const QModelIndex &index) {

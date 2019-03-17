@@ -4,9 +4,16 @@ QString const SearchInterface::BaseURL = "https://api.listennotes.com/api/v1/sea
 QString const SearchInterface::BasePath = "";
 
 SearchInterface::SearchInterface(QString apiKey, QNetworkAccessManager* nwManager, QObject *parent)
-    : QAbstractTableModel(parent), _results(), _apiKey(apiKey), _lastSearchString(""), _nwManager(nwManager), _searchInProgress(false), _hasResults(false)
+    : QAbstractTableModel(parent),
+      _results(),
+      _apiKey(apiKey),
+      _lastSearchString(""),
+      _nwManager(nwManager),
+      _searchInProgress(false),
+      _hasResults(false),
+      _currentReply(nullptr)
 {
-    connect(_nwManager, &QNetworkAccessManager::finished, this, &SearchInterface::downloadFinished);
+    //connect(_nwManager, &QNetworkAccessManager::finished, this, &SearchInterface::downloadFinished);
 }
 
 bool SearchInterface::beginSearch(QString title) {
@@ -27,7 +34,8 @@ bool SearchInterface::beginSearch(QString title) {
     QNetworkRequest request(apiURL);
     request.setRawHeader("X-RapidAPI-Key", _apiKey.toUtf8());
 
-    _nwManager->get(request);
+    _currentReply = _nwManager->get(request);
+    connect(_currentReply, &QNetworkReply::finished, this, &SearchInterface::downloadFinished);
 
     _lastSearchString = title;
     _searchInProgress = true;
@@ -47,10 +55,10 @@ std::vector<SearchResult> const& SearchInterface::results() const {
     return _results;
 }
 
-void SearchInterface::downloadFinished(QNetworkReply* reply) {
-    reply->deleteLater();
+void SearchInterface::downloadFinished() {
+    _currentReply->deleteLater();
 
-    auto results = QJsonDocument::fromJson(reply->readAll());
+    auto results = QJsonDocument::fromJson(_currentReply->readAll());
     if (results.isNull()) {
         qDebug() << "Search result parse failed";
     }
@@ -80,6 +88,7 @@ void SearchInterface::downloadFinished(QNetworkReply* reply) {
     }
 
     _searchInProgress = false;
+    _currentReply = nullptr;
     emit searchFinished();
 }
 

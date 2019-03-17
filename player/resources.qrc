@@ -10,5 +10,6 @@
         <file>icons/next.png</file>
         <file>icons/forward.png</file>
         <file>icons/backward.png</file>
+        <file>icons/listennotes_logo.png</file>
     </qresource>
 </RCC>

@@ -37,7 +37,6 @@ class SearchInterface : public QAbstractTableModel
 public:
     explicit SearchInterface(QString apiKey, QNetworkAccessManager* nwManager, QObject *parent = nullptr);
 
-    bool beginSearch(QString title);
     bool searchInProgress() const;
     bool hasResults() const;
     std::vector<SearchResult> const& results() const;
@@ -46,9 +45,10 @@ signals:
     void searchFinished();
 
 public slots:
+    bool beginSearch(QString title);
 
 private slots:
-    void downloadFinished(QNetworkReply* reply);
+    void downloadFinished();
 
 private:
     static QString const BaseURL;
@@ -59,6 +59,7 @@ private:
     QNetworkAccessManager* _nwManager;
     bool _searchInProgress;
     bool _hasResults;
+    QNetworkReply* _currentReply;
 
     // QAbstractItemModel interface
 public:
