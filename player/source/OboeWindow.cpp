@@ -190,6 +190,18 @@ OboeWindow::OboeWindow(QWidget *parent) :
     connect(ui->showSettings, &QAction::triggered, [this]() {
         _settingsWindow.show();
     });
+
+    connect(&_settingsManager, &SettingsManager::settingChanged, [this](const QString& name, const QVariant& value) {
+        if (name == "jumpForwardAmount") {
+            _jumpForwardTime = value.toInt();
+        } else if (name == "jumpBackwardAmount") {
+            _jumpBackwardTime = value.toInt();
+        } else if (name == "subscriptionUpdatePeriod") {
+            _updateTimer->stop();
+            _updateTimer->setInterval(minutes(value.toInt()));
+            _updateTimer->start();
+        }
+    });
 }
 
 OboeWindow::~OboeWindow()
